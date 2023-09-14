@@ -38,7 +38,7 @@ namespace Control_Panel
                         IotHubConnectionString = config.Configuration.GetConnectionString("IotHub")!,
                         EventHubEndpoint = config.Configuration.GetConnectionString("EventHubEndpoint")!,
                         EventHubName = config.Configuration.GetConnectionString("EventHubName")!,
-                        ConsumerGroup = config.Configuration.GetConnectionString("ConsumerGroup")!,
+                        ConsumerGroup = config.Configuration.GetConnectionString("ConsumerGroup")!
                     }));
                 })
                 .Build();

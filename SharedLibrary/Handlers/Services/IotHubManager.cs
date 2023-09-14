@@ -77,7 +77,6 @@ namespace SharedLibrary.Handlers.Services
 
         }
 
-
         public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery = "select * from  devices")
         {
             try
@@ -100,8 +99,6 @@ namespace SharedLibrary.Handlers.Services
             return null!;
 
         }
-
-
 
     }
 
