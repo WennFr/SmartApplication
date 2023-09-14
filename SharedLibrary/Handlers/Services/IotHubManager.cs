@@ -5,6 +5,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Messaging.EventHubs.Consumer;
+using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Shared;
+using Newtonsoft.Json;
 
 namespace SharedLibrary.Handlers.Services
 {
