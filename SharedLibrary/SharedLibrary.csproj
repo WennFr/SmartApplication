@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.Azure.Devices.Shared" Version="1.30.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MVVM\Views\" />
+    <Folder Include="MVVM\ViewModels\" />
+  </ItemGroup>
+
 </Project>

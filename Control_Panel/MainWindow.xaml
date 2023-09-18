@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Control_Panel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="400">
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        MouseDown="Window_MouseDown"
+        Title="MainWindow" Height="720" Width="1280">
     <Grid Margin="20 10 20 10 ">
 
         <Grid.RowDefinitions>
