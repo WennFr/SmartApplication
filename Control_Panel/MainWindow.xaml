@@ -9,7 +9,7 @@
         WindowStyle="None"
         MouseDown="Window_MouseDown"
         Title="MainWindow" Height="720" Width="1280">
-    <Grid Margin="20 10 20 10 ">
+    <Grid >
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,13 +17,18 @@
 
         </Grid.RowDefinitions>
 
+
+
+        <Image Source="Assets/Images/background-2.jpg" Stretch="Fill"/>
+        <Rectangle Fill="#000000" Opacity="0.80" />
+
         <StackPanel Grid.Row="0">
-            <TextBlock Text="DeviceId" FontSize="10" Foreground="#999999" Margin="0 0 0 3 " />
+            <!--<TextBlock Text="DeviceId" FontSize="10" Foreground="#999999" Margin="0 0 0 3 " />
             <TextBox x:Name="SelectedDeviceId" Padding="3"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <Button x:Name="StartButton" Content="Start" Margin="5" Padding="20 5" Click ="StartButton_Click"/>
                 <Button x:Name="StopButton" Content="Stop" Margin="5" Padding="20 5" Click="StopButton_Click" />
-            </StackPanel>
+            </StackPanel>-->
 
 
             <ListView Grid.Row="1" x:Name="DeviceListView" HorizontalContentAlignment="Stretch" ItemsSource="{Binding DeviceTwinList}">
@@ -46,5 +51,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
+
+
     </Grid>
 </Window>

@@ -17,6 +17,8 @@
     <None Remove="Assets\Fonts\fa-sharp-solid-900.ttf" />
     <None Remove="Assets\Fonts\fa-solid-900.ttf" />
     <None Remove="Assets\Fonts\fa-thin-100.ttf" />
+    <None Remove="Assets\Images\background-1.jpg" />
+    <None Remove="Assets\Images\background-2.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +47,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Fonts\fa-thin-100.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\background-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Images\background-2.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
