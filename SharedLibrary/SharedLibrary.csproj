@@ -13,11 +13,4 @@
     <PackageReference Include="Microsoft.Azure.Devices.Shared" Version="1.30.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Assets\Fonts\" />
-    <Folder Include="Assets\Images\" />
-    <Folder Include="Resources\Fonts\" />
-    <Folder Include="Resources\Styles\" />
-  </ItemGroup>
-
 </Project>

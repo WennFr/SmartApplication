@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:Control_Panel"
              >
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Resources/Fonts/FontAwesomeDictionary.xaml" />
+                <ResourceDictionary Source="./Resources/Styles/DeviceTileDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
