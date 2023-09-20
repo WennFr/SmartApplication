@@ -64,8 +64,8 @@ namespace Control_Panel
 
 
                         var deviceType = "Unknown"; 
-                        if (twin.Properties?.Desired.Contains("deviceType") == true)
-                            deviceType = twin.Properties.Desired["DeviceType"].ToString();
+                        if (twin.Properties?.Reported.Contains("deviceType") == true)
+                            deviceType = twin.Properties.Reported["deviceType"].ToString();
 
                         Devices.Add(new DeviceItem
                         {

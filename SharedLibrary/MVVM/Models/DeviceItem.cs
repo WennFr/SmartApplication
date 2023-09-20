@@ -25,7 +25,7 @@ namespace SharedLibrary.MVVM.Models
         {
             switch (DeviceType?.ToLower())
             {
-                case "light":
+                case "lamp":
                     return "\uf0eb";
 
                 case "fan":
