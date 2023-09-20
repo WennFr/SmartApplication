@@ -27,7 +27,7 @@
                                 <Grid>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Icon, FallbackValue=&#xf2db;}" FontFamily="{StaticResource FontAwesome-Regular}"  FontSize="80" Foreground="#ffffff" Margin="0 0 0 20"/>
-                                        <TextBlock Text="{Binding Placement, FallbackValue=Unknown}" HorizontalAlignment="Center" Foreground="#cccccc"/>
+                                        <TextBlock Text="{Binding DeviceId, FallbackValue=Unknown}" HorizontalAlignment="Center" Foreground="#cccccc"/>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

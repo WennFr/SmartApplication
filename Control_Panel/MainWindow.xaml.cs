@@ -17,6 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SharedLibrary.MVVM.Models;
+using Microsoft.Azure.Devices;
 
 namespace Control_Panel
 {
@@ -28,14 +30,16 @@ namespace Control_Panel
         private readonly IotHubManager _iotHub;
         public ObservableCollection<Twin> DeviceTwinList { get; set; } = new ObservableCollection<Twin>();
 
+        public ObservableCollection<DeviceItem> Devices { get; set; } = new ObservableCollection<DeviceItem>();
+
+
 
         public MainWindow(IotHubManager iotHub)
         {
             InitializeComponent();
             _iotHub = iotHub;
-
-
-            DeviceListView.ItemsSource = DeviceTwinList;
+            this.DataContext = this;
+            DeviceList.ItemsSource = Devices;
             Task.FromResult(GetDevicesTwinAsync());
 
         }
@@ -48,9 +52,29 @@ namespace Control_Panel
                 {
                     var twins = await _iotHub.GetDevicesAsTwinAsync();
                     DeviceTwinList.Clear();
+                    Devices.Clear();
 
                     foreach (var twin in twins)
+                    {
                         DeviceTwinList.Add(twin);
+
+                        var isActive = false; 
+                        if (twin.Properties?.Reported.Contains("deviceOn") == true)
+                            isActive = bool.TryParse(twin.Properties.Reported["deviceOn"].ToString(), out bool parsedValue) ? parsedValue : isActive;
+
+
+                        var deviceType = "Unknown"; 
+                        if (twin.Properties?.Desired.Contains("deviceType") == true)
+                            deviceType = twin.Properties.Desired["DeviceType"].ToString();
+
+                        Devices.Add(new DeviceItem
+                        {
+                            DeviceId = twin.DeviceId,
+                            DeviceType = deviceType,
+                            IsActive = isActive 
+                        });
+                    }
+
 
                     await Task.Delay(1000);
                 }
