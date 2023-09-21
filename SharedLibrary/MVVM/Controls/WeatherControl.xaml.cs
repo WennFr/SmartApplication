@@ -1,4 +1,4 @@
-﻿ using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,9 +19,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using SharedLibrary.MVVM.Models;
 using JsonConverter = Newtonsoft.Json.JsonConverter;
 using Microsoft.Azure.Amqp.Framing;
+using SharedLibrary.MVVM.Models.Weather;
 
 namespace SharedLibrary.MVVM.Controls
 {
@@ -30,6 +30,7 @@ namespace SharedLibrary.MVVM.Controls
     {
         private string? _temperature;
         private string? _condition;
+        private string? _humidity;
 
         public string? Temperature
         {
@@ -55,6 +56,17 @@ namespace SharedLibrary.MVVM.Controls
             }
         }
 
+        public string? Humidity
+        {
+            get
+            {
+                return _humidity;
+            }
+            set
+            {
+                _humidity = value; OnPropertyChanged(nameof(Humidity));
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
@@ -83,14 +95,14 @@ namespace SharedLibrary.MVVM.Controls
 
                 var (latitude, longitude) = (59.3294, 18.0687);
 
-                var weatherResponse = await http.GetAsync($"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true");
+                var weatherResponse = await http.GetAsync($"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=relativehumidity_2m&current_weather=true");
 
                 if (weatherResponse.IsSuccessStatusCode)
                 {
                     var json = await weatherResponse.Content.ReadAsStringAsync();
                     var weatherData = JsonConvert.DeserializeObject<WeatherData>(json);
                     Temperature = weatherData.Current_Weather.Temperature.ToString();
-
+                    Humidity = GetRelativeHumidity(weatherData).ToString();
                     switch (weatherData.Current_Weather.WeatherCode)
                     {
                         case 0:
@@ -161,6 +173,23 @@ namespace SharedLibrary.MVVM.Controls
                 Temperature = "--";
             }
         }
+
+        public int GetRelativeHumidity(WeatherData weatherData)
+        {
+            var currentTime = DateTime.Now;
+
+            int currentIndex = weatherData.Hourly.Time.IndexOf(currentTime.ToString("yyyy-MM-ddTHH:00"));
+
+            if (currentIndex != -1)
+            {
+                var currentHumidity = weatherData.Hourly.RelativeHumidity_2m[currentIndex];
+
+                return currentHumidity;
+            }
+
+            return 0;
+        }
+
 
 
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)

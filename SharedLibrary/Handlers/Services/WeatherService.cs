@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SharedLibrary.MVVM.Models;
+using SharedLibrary.MVVM.Models.Weather;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
