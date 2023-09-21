@@ -13,70 +13,8 @@
     <Grid >
 
         <Image Source="Assets/Images/background-2.jpg" Stretch="Fill"/>
-        <Rectangle Fill="#000000" Opacity="0.80" />
+        <ContentControl Content="{Binding CurrentViewModel}" />
 
-        <Grid Margin="40">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-
-                <controls:WeatherControl Grid.Column="0"/>
-
-                <controls:DateTimeControl Grid.Column="1"/>
-
-
-
-                <!--Settings Section-->
-                <Button Grid.Column="2" FontFamily="{StaticResource FontAwesome-Regular}" FontSize="40" Content="&#xf142;" Background="Transparent" Foreground="#cccccc" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0" />
-
-
-            </Grid>
-            <!--<StackPanel Grid.Row="0">
-            <ListView Grid.Row="1" x:Name="DeviceListView" HorizontalContentAlignment="Stretch" ItemsSource="{Binding DeviceTwinList}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Text="{Binding DeviceId}" VerticalAlignment="Center" />
-
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button x:Name="StartButton" Content="Start" Margin="5" Padding="20 5" Click ="StartButton_Click" />
-                                <Button x:Name="StopButton" Content="Stop" Margin="5" Padding="20 5" Click ="StopButton_Click" />
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackPanel>-->
-
-            <ItemsControl x:Name="DeviceList" ItemsSource="{Binding Devices}" Grid.Row="1" Margin="0 20 0 0">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <controls:DeviceTileControl />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-        </Grid>
     </Grid>
 
 </Window>

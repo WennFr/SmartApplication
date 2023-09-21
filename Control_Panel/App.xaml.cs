@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
 using SharedLibrary.Models;
 using SharedLibrary.MVVM.Core;
+using SharedLibrary.Services;
+using SharedLibrary.MVVM.ViewModels;
 
 namespace Control_Panel
 {
@@ -34,6 +36,7 @@ namespace Control_Panel
                .ConfigureServices((config, services) =>
                 {
                     services.AddSingleton<NavigationStore>();
+                    services.AddSingleton<DateTimeService>();
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton(new IotHubManager(new IotHubManagerOptions
                     {
@@ -42,21 +45,27 @@ namespace Control_Panel
                         EventHubName = config.Configuration.GetConnectionString("EventHubName")!,
                         ConsumerGroup = config.Configuration.GetConnectionString("ConsumerGroup")!
                     }));
+                    services.AddSingleton<HomeViewModel>();
+                    services.AddSingleton<SettingsViewModel>();
                 })
                 .Build();
 
         }
 
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs args)
         {
-            await AppHost!.StartAsync();
-
-            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+            
+            var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
             var navigationStore = AppHost!.Services.GetService<NavigationStore>();
+            var dateTimeService = AppHost!.Services.GetService<DateTimeService>();
+            var iotHub = AppHost!.Services.GetService<IotHubManager>();
 
+
+            navigationStore!.CurrentViewModel = new HomeViewModel(navigationStore, dateTimeService!, iotHub);
+
+            await AppHost!.StartAsync();
             mainWindow.Show();
-
-            base.OnStartup(e);
+            base.OnStartup(args);
         }
     }
 }

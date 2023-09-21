@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ServiceApplication.MVVM.Views
+namespace SharedLibrary.MVVM.Views
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml
