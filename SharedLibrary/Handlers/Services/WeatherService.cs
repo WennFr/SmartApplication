@@ -1,32 +1,18 @@
-﻿ using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using SharedLibrary.MVVM.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using SharedLibrary.MVVM.Models;
-using JsonConverter = Newtonsoft.Json.JsonConverter;
-using Microsoft.Azure.Amqp.Framing;
 
-namespace SharedLibrary.MVVM.Controls
+namespace SharedLibrary.Handlers.Services
 {
-
-    public partial class WeatherControl : UserControl, INotifyPropertyChanged
+    public class WeatherService
     {
         private string? _temperature;
         private string? _condition;
@@ -62,16 +48,14 @@ namespace SharedLibrary.MVVM.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public WeatherControl()
+        public WeatherService()
         {
-            InitializeComponent();
-            DataContext = this;
             DispatcherTimer timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMinutes(15)
             };
             timer.Tick += async (s, e) => await GetWeatherAsync();
-            Loaded += async (s, e) => await GetWeatherAsync();
+            //Loaded += async (s, e) => await GetWeatherAsync();
             timer.Start();
         }
 
@@ -163,12 +147,5 @@ namespace SharedLibrary.MVVM.Controls
         }
 
 
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
-        }
     }
 }

@@ -32,9 +32,7 @@ namespace Control_Panel
 
         }
 
-       
-
-
+        
         //private async void StartButton_Click(object sender, RoutedEventArgs e)
         //{
         //    try
