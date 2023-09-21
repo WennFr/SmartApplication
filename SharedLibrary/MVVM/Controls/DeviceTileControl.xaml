@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              >
 
-    <Button Style="{StaticResource DeviceTile}" />
+    <Button Style="{StaticResource DeviceTile}"  />
 
 
     

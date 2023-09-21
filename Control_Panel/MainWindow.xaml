@@ -71,7 +71,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <controls:DeviceTileControl/>
+                        <controls:DeviceTileControl />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

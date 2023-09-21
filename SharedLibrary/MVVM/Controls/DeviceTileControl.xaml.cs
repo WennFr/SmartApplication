@@ -24,5 +24,10 @@ namespace SharedLibrary.MVVM.Controls
         {
             InitializeComponent();
         }
+
+
+
+
+
     }
 }

@@ -5,49 +5,59 @@
 
 
     <Style x:Key="DeviceTile" TargetType="Button">
-    <Setter Property="Background" Value="#3f3f40"></Setter>
-    <Setter Property="BorderThickness" Value="0"></Setter>
-    <Setter Property="Height" Value="210"></Setter>
-    <Setter Property="Width" Value="200"></Setter>
-    <Setter Property="Margin" Value="10"></Setter>
-    <Setter Property="Padding" Value="10"></Setter>
-    <Setter Property="Opacity" Value="0.8"></Setter>
-    <Setter Property="Effect">
-        <Setter.Value>
-            <DropShadowEffect ShadowDepth="1" BlurRadius="15" Opacity="0.75" />
-        </Setter.Value>
-    </Setter>
-    <Setter Property="Template">
-        <Setter.Value>
-            <ControlTemplate TargetType="Button">
-                <Border x:Name="buttonBorder" Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="Transparent">
-                    <ContentPresenter Content="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <ContentPresenter.ContentTemplate>
-                            <DataTemplate DataType="{x:Type models1:DeviceItem}">
-                                <Grid>
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Icon, FallbackValue=&#xf2db;}" FontFamily="{StaticResource FontAwesome-Regular}"  FontSize="80" Foreground="#ffffff" Margin="0 0 0 20"/>
-                                        <TextBlock Text="{Binding DeviceId, FallbackValue=Unknown}" HorizontalAlignment="Center" Foreground="#cccccc"/>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ContentPresenter.ContentTemplate>
-                    </ContentPresenter>
-                </Border>
+        <Setter Property="Background" Value="#3f3f40"></Setter>
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Height" Value="210"></Setter>
+        <Setter Property="Width" Value="200"></Setter>
+        <Setter Property="Margin" Value="10"></Setter>
+        <Setter Property="Padding" Value="10"></Setter>
+        <Setter Property="Opacity" Value="0.8"></Setter>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="1" BlurRadius="15" Opacity="0.75" />
+            </Setter.Value>
+        </Setter>
 
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsPressed" Value="True">
 
-                        <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a"/>
-                    </Trigger>
-                    <DataTrigger Binding="{Binding IsActive}" Value="True">
-                        <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a"/>
-                    </DataTrigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
-        </Setter.Value>
-    </Setter>
-</Style>
+        <Setter Property="DataContext" Value="{Binding}" />
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="buttonBorder" Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="Transparent">
+                        <ContentPresenter Content="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <ContentPresenter.ContentTemplate>
+                                <DataTemplate DataType="{x:Type models1:DeviceItem}">
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Icon, FallbackValue=&#xf2db;}" FontFamily="{StaticResource FontAwesome-Regular}"  FontSize="80" Foreground="#ffffff" Margin="0 0 0 20"/>
+                                            <TextBlock Text="{Binding DeviceId, FallbackValue=Unknown}" HorizontalAlignment="Center" Foreground="#cccccc"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ContentPresenter.ContentTemplate>
+                        </ContentPresenter>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+
+                            <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                            <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+
+
+
+
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 
 </ResourceDictionary>
