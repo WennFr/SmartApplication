@@ -89,115 +89,63 @@ namespace Control_Panel
         }
 
 
-        //private async void StartButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button;
-
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin;
-
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHub.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "start"
-        //                    });
-        //            }
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
-
-
-        //}
-
-        //private async void StopButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button;
-
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin;
-
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHub.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "stop"
-        //                    });
-
-        //            }
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
-        //}
-
-
-
-
-
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Button button = (Button)sender;
-                Twin twin = (Twin)button.DataContext; // This is the Twin object associated with the clicked button
+                Button? button = sender as Button;
 
-                string deviceId = twin.DeviceId;
-
-                if (!string.IsNullOrEmpty(deviceId))
+                if (button != null)
                 {
-                    await _iotHub.SendMethodAsync(new MethodDataRequest
+                    Twin? twin = button.DataContext as Twin;
+
+                    if (twin != null)
                     {
-                        DeviceId = deviceId,
-                        MethodName = "start"
-                    });
+                        string deviceId = twin.DeviceId;
+
+
+                        if (!string.IsNullOrEmpty(deviceId))
+                            await _iotHub.SendMethodAsync(new MethodDataRequest
+                            {
+                                DeviceId = deviceId,
+                                MethodName = "start"
+                            });
+                    }
+
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
+
+
         }
 
         private async void StopButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Button button = (Button)sender;
-                Twin twin = (Twin)button.DataContext; // This is the Twin object associated with the clicked button
+                Button? button = sender as Button;
 
-                string deviceId = twin.DeviceId;
-
-                if (!string.IsNullOrEmpty(deviceId))
+                if (button != null)
                 {
-                    await _iotHub.SendMethodAsync(new MethodDataRequest
+                    Twin? twin = button.DataContext as Twin;
+
+                    if (twin != null)
                     {
-                        DeviceId = deviceId,
-                        MethodName = "stop"
-                    });
+                        string deviceId = twin.DeviceId;
+
+
+                        if (!string.IsNullOrEmpty(deviceId))
+                            await _iotHub.SendMethodAsync(new MethodDataRequest
+                            {
+                                DeviceId = deviceId,
+                                MethodName = "stop"
+                            });
+
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -205,6 +153,12 @@ namespace Control_Panel
                 Debug.WriteLine(ex.Message);
             }
         }
+
+
+
+
+
+
 
 
 

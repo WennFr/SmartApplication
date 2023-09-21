@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
 using SharedLibrary.Models;
+using SharedLibrary.MVVM.Core;
 
 namespace Control_Panel
 {
@@ -32,6 +33,7 @@ namespace Control_Panel
                 })
                .ConfigureServices((config, services) =>
                 {
+                    services.AddSingleton<NavigationStore>();
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton(new IotHubManager(new IotHubManagerOptions
                     {
@@ -49,7 +51,9 @@ namespace Control_Panel
         {
             await AppHost!.StartAsync();
 
-            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();   // med DI
+            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+            var navigationStore = AppHost!.Services.GetService<NavigationStore>();
+
             mainWindow.Show();
 
             base.OnStartup(e);
