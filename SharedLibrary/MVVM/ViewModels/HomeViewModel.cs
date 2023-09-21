@@ -30,15 +30,13 @@ namespace SharedLibrary.MVVM.ViewModels
             _iotHub = iotHub;
             _devices = new ObservableCollection<DeviceItem>();
 
-            Task.FromResult(GetDevicesTwinAsync());
+            Task.FromResult(GetDevicesAsync());
             Task.Run(GetDateTime);
         }
 
         // Navigation
         public ICommand NavigateToSettingsCommand =>
             new RelayCommand(() => _navigationStore.CurrentViewModel = new SettingsViewModel(_navigationStore, _dateTimeService, _iotHub));
-
-
 
 
         private string? _currentTime = "00:00";
@@ -70,7 +68,7 @@ namespace SharedLibrary.MVVM.ViewModels
             }
         }
 
-        private async Task GetDevicesTwinAsync()
+        private async Task GetDevicesAsync()
         {
             try
             {
@@ -78,29 +76,9 @@ namespace SharedLibrary.MVVM.ViewModels
                 {
                     var twins = await _iotHub.GetDevicesAsTwinAsync();
                     Devices.Clear();
+                    Devices = await _iotHub.GetDevicesAsDeviceItemAsync(twins);
+                    await Task.Delay(10000);
 
-                    foreach (var twin in twins)
-                    {
-
-                        var isActive = false;
-                        if (twin.Properties?.Reported.Contains("deviceOn") == true)
-                            isActive = bool.TryParse(twin.Properties.Reported["deviceOn"].ToString(), out bool parsedValue) ? parsedValue : isActive;
-
-
-                        var deviceType = "Unknown";
-                        if (twin.Properties?.Reported.Contains("deviceType") == true)
-                            deviceType = twin.Properties.Reported["deviceType"].ToString();
-
-                        Devices.Add(new DeviceItem
-                        {
-                            DeviceId = twin.DeviceId,
-                            DeviceType = deviceType,
-                            IsActive = isActive
-                        });
-                    }
-
-
-                    await Task.Delay(1000);
                 }
 
             }

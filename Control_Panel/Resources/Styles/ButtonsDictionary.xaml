@@ -7,7 +7,7 @@
         <Setter Property="Foreground" Value="#cccccc" />
         <Setter Property="FontSize" Value="48" />
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome-Regular}" />
-        <Setter Property="Content" Value="&#xf1de;" />
+        <Setter Property="Content" Value="&#xf39b;" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>

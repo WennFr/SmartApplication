@@ -1,6 +1,7 @@
 ﻿using SharedLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using Azure.Messaging.EventHubs.Consumer;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
+using SharedLibrary.MVVM.Models;
 
 namespace SharedLibrary.Handlers.Services
 {
@@ -99,6 +101,49 @@ namespace SharedLibrary.Handlers.Services
             return null!;
 
         }
+
+        public async Task<ObservableCollection<DeviceItem>> GetDevicesAsDeviceItemAsync(IEnumerable<Twin> twins)
+        {
+
+            try
+            {
+                var deviceItems = new ObservableCollection<DeviceItem>();
+
+                foreach (var twin in twins)
+                {
+
+                    var isActive = false;
+                    if (twin.Properties?.Reported.Contains("deviceOn") == true)
+                        isActive = bool.TryParse(twin.Properties.Reported["deviceOn"].ToString(), out bool parsedValue) ? parsedValue : isActive;
+
+
+                    var deviceType = "Unknown";
+                    if (twin.Properties?.Reported.Contains("deviceType") == true)
+                        deviceType = twin.Properties.Reported["deviceType"].ToString();
+
+                    deviceItems.Add(new DeviceItem
+                    {
+                        DeviceId = twin.DeviceId,
+                        DeviceType = deviceType,
+                        IsActive = isActive
+                    });
+                }
+
+                return deviceItems;
+
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+
+            return null!;
+        }
+
+
+
 
     }
 

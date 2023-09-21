@@ -30,7 +30,7 @@
 
                 <controls:WeatherControl Grid.Column="0"/>
 
-                <controls:DateTimeControl Grid.Column="1"/>
+                <!--<controls:DateTimeControl Grid.Column="1"/>-->
 
                 <!--DateTime Section-->
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center">
