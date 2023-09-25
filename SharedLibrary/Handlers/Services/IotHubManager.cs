@@ -20,11 +20,19 @@ namespace SharedLibrary.Handlers.Services
         private ServiceClient _serviceClient;
         private EventHubConsumerClient _consumerClient;
 
+        public event Action? DevicesUpdated;
+
+        public ObservableCollection<DeviceItem>? CurrentDevices { get; private set; }
+
         public IotHubManager(IotHubManagerOptions options)
         {
+
             _registryManager = RegistryManager.CreateFromConnectionString(options.IotHubConnectionString);
             _serviceClient = ServiceClient.CreateFromConnectionString(options.IotHubConnectionString);
             _consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndpoint);
+
+            Task.Run(SetAllDevicesAsync);
+            //SetAllDevicesAsync().GetAwaiter().GetResult();
 
         }
 
@@ -56,30 +64,36 @@ namespace SharedLibrary.Handlers.Services
         }
 
 
-        public async Task<IEnumerable<string>> GetDevicesAsJsonAsync(string sqlQuery = "select * from  devices")
+
+
+        public async Task SetAllDevicesAsync()
         {
+
+
             try
             {
+                var sqlQuery = "select * from  devices";
 
-                var devices = new List<string>();
-                var result = _registryManager.CreateQuery(sqlQuery);
 
-                if (result.HasMoreResults)
-                    foreach (var device in await result.GetNextAsJsonAsync())
-                        devices.Add(device);
+                var devicesTwin = await GetDevicesAsTwinAsync(sqlQuery);
 
-                return devices;
+                if (devicesTwin != null)
+                    CurrentDevices = GetDevicesAsDeviceItemAsync(devicesTwin);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.WriteLine($"{ex.Message}");
+                CurrentDevices = null!;
             }
 
-            return null!;
+
+
+            DevicesUpdated?.Invoke();
 
         }
 
-        public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery = "select * from  devices")
+
+
+        public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery)
         {
             try
             {
@@ -91,6 +105,7 @@ namespace SharedLibrary.Handlers.Services
                     foreach (var device in await result.GetNextAsTwinAsync())
                         devices.Add(device);
 
+
                 return devices;
             }
             catch (Exception ex)
@@ -102,7 +117,7 @@ namespace SharedLibrary.Handlers.Services
 
         }
 
-        public async Task<ObservableCollection<DeviceItem>> GetDevicesAsDeviceItemAsync(IEnumerable<Twin> twins)
+        public ObservableCollection<DeviceItem> GetDevicesAsDeviceItemAsync(IEnumerable<Twin> twins)
         {
 
             try
@@ -142,6 +157,34 @@ namespace SharedLibrary.Handlers.Services
             return null!;
         }
 
+
+
+
+
+
+
+        public async Task<IEnumerable<string>> GetDevicesAsJsonAsync(string sqlQuery = "select * from  devices")
+        {
+            try
+            {
+
+                var devices = new List<string>();
+                var result = _registryManager.CreateQuery(sqlQuery);
+
+                if (result.HasMoreResults)
+                    foreach (var device in await result.GetNextAsJsonAsync())
+                        devices.Add(device);
+
+                return devices;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"{ex.Message}");
+            }
+
+            return null!;
+
+        }
 
 
 

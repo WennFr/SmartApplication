@@ -25,18 +25,16 @@ namespace SharedLibrary.MVVM.ViewModels
         private readonly IotHubManager _iotHub;
 
 
-        //public ObservableCollection<DeviceItem> Devices { get; set; } = new ObservableCollection<DeviceItem>();
-
-        public HomeViewModel(IServiceProvider serviceProvider, DateTimeService dateTimeService, WeatherService weatherService ,IotHubManager iotHub)
+        public HomeViewModel(IServiceProvider serviceProvider, DateTimeService dateTimeService, WeatherService weatherService , IotHubManager iotHub)
         {
             _serviceProvider = serviceProvider;
             _dateTimeService = dateTimeService;
             _weatherService = weatherService;
             _iotHub = iotHub;
-            //_devices = new ObservableCollection<DeviceItem>();
 
             UpdateDateAndTime();
             UpdateWeather();
+            UpdateDevices();
         }
 
         [ObservableProperty]
@@ -57,22 +55,15 @@ namespace SharedLibrary.MVVM.ViewModels
         [ObservableProperty]
         private string? _currentHumidity = "--";
 
+        [ObservableProperty] 
+        private ObservableCollection<DeviceItem>? _devices;
+
         [RelayCommand]
         private void NavigateToSettings()
         {
             var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
             mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
         }
-
-
-
-        //private ObservableCollection<DeviceItem> _devices;
-        //public ObservableCollection<DeviceItem> Devices
-        //{
-        //    get => _devices;
-        //    set => SetValue(ref _devices, value);
-        //}
-
 
         private void UpdateDateAndTime()
         {
@@ -85,7 +76,6 @@ namespace SharedLibrary.MVVM.ViewModels
             };
         }
 
-
         private void UpdateWeather()
         {
 
@@ -97,6 +87,15 @@ namespace SharedLibrary.MVVM.ViewModels
             };
         }
 
+
+        private void UpdateDevices()
+        {
+
+            _iotHub.DevicesUpdated += () =>
+            {
+                _devices = _iotHub.CurrentDevices;
+            };
+        }
 
         //private async Task GetDevicesAsync()
         //{
