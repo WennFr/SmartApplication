@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Control_Panel"
         xmlns:controls="clr-namespace:SharedLibrary.MVVM.Controls;assembly=SharedLibrary"
+        xmlns:views="clr-namespace:SharedLibrary.MVVM.Views;assembly=SharedLibrary"
+        xmlns:viewmodels="clr-namespace:SharedLibrary.MVVM.ViewModels;assembly=SharedLibrary"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
@@ -13,8 +15,17 @@
     <Grid >
 
         <Image Source="Assets/Images/background-2.jpg" Stretch="Fill"/>
-        <ContentControl Content="{Binding CurrentViewModel}" />
+        <ContentControl Content="{Binding CurrentViewModel}" >
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                    <views:HomeView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
+                    <views:SettingsView />
+                </DataTemplate>
+            </ContentControl.Resources>
 
+        </ContentControl>
     </Grid>
 
 </Window>

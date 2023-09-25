@@ -19,20 +19,21 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SharedLibrary.MVVM.Models;
 using Microsoft.Azure.Devices;
-using SharedLibrary.MVVM.Core;
+using SharedLibrary.MVVM.ViewModels;
 
 namespace Control_Panel
 {
     public partial class MainWindow : Window
     {
-        public MainWindow(IotHubManager iotHub, NavigationStore navigationStore)
+        public MainWindow(MainWindowViewModel mainWindowViewModel)
         {
             InitializeComponent();
-            DataContext = navigationStore;
+            DataContext = mainWindowViewModel;
+
 
         }
 
-        
+
         //private async void StartButton_Click(object sender, RoutedEventArgs e)
         //{
         //    try

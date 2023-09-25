@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:viewModels1="clr-namespace:SharedLibrary.MVVM.ViewModels"
+             xmlns:viewmodels="clr-namespace:SharedLibrary.MVVM.ViewModels"
              xmlns:controls="clr-namespace:SharedLibrary.MVVM.Controls"
-             d:DataContext="{d:DesignInstance Type=viewModels1:HomeViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
              mc:Ignorable="d" 
              Height="720" Width="1280">
     <Grid>
@@ -28,16 +28,14 @@
 
                 <!--Weather Section-->
 
-                <controls:WeatherControl Grid.Column="0"/>
+                <controls:WeatherControl Grid.Column="0"
+                                         Condition="{Binding CurrentWeatherCondition}"
+                                         Temperature="{Binding CurrentTemperature}"
+                                         Humidity="{Binding CurrentHumidity}" />
 
-                <!--<controls:DateTimeControl Grid.Column="1"/>-->
 
                 <!--DateTime Section-->
-                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding CurrentTime, FallbackValue=--:--}" FontSize="82" Margin="0 -25 0 0" Padding="0" Foreground="#f5f5f5" HorizontalAlignment="Center" VerticalAlignment="Top" />
-                    <TextBlock Text="{Binding CurrentDate}" FontSize="22" Foreground="#cccccc" HorizontalAlignment="Center" />
-                </StackPanel>
-
+                <controls:DateTimeControl x:Name="dateTimeControl" Grid.Column="1"  CurrentTime="{Binding CurrentTime}" CurrentDate="{Binding CurrentDate}" />
 
                 <!--Settings Button Section-->
                 <Button Grid.Column="2" Command="{Binding NavigateToSettingsCommand }"  Style="{StaticResource SettingsButton}"/>

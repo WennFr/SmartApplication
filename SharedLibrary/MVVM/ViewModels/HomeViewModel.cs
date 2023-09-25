@@ -7,87 +7,117 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Azure.Devices;
+using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
-using SharedLibrary.MVVM.Core;
 using SharedLibrary.MVVM.Models;
 using SharedLibrary.Services;
 
 namespace SharedLibrary.MVVM.ViewModels
 {
-    public class HomeViewModel : ObservableObject
+    public partial class HomeViewModel : ObservableObject
     {
-        private readonly IotHubManager _iotHub;
-        private readonly NavigationStore _navigationStore;
+        private readonly IServiceProvider _serviceProvider;
         private readonly DateTimeService _dateTimeService;
+        private readonly WeatherService _weatherService;
+        private readonly IotHubManager _iotHub;
+
 
         //public ObservableCollection<DeviceItem> Devices { get; set; } = new ObservableCollection<DeviceItem>();
 
-        public HomeViewModel(NavigationStore navigationStore, DateTimeService dateTimeService, IotHubManager iotHub)
+        public HomeViewModel(IServiceProvider serviceProvider, DateTimeService dateTimeService, WeatherService weatherService ,IotHubManager iotHub)
         {
-            _navigationStore = navigationStore;
+            _serviceProvider = serviceProvider;
             _dateTimeService = dateTimeService;
+            _weatherService = weatherService;
             _iotHub = iotHub;
-            _devices = new ObservableCollection<DeviceItem>();
+            //_devices = new ObservableCollection<DeviceItem>();
 
-            Task.FromResult(GetDevicesAsync());
-            Task.Run(GetDateTime);
+            UpdateDateAndTime();
+            UpdateWeather();
         }
 
-        // Navigation
-        public ICommand NavigateToSettingsCommand =>
-            new RelayCommand(() => _navigationStore.CurrentViewModel = new SettingsViewModel(_navigationStore, _dateTimeService, _iotHub));
+        [ObservableProperty]
+        private string? _title = "Home";
 
+        [ObservableProperty]
+        private string? _currentTime = "--:--";
 
-        private string? _currentTime = "00:00";
-        public string? CurrentTime
-        {
-            get => _currentTime; set => SetValue(ref _currentTime, value);
-        }
-
-
+        [ObservableProperty]
         private string? _currentDate;
-        public string? CurrentDate { get => _currentDate; set => SetValue(ref _currentDate, value); }
 
+        [ObservableProperty]
+        private string? _currentWeatherCondition = "\ue137";
 
-        private ObservableCollection<DeviceItem> _devices;
-        public ObservableCollection<DeviceItem> Devices
+        [ObservableProperty]
+        private string? _currentTemperature = "--";
+
+        [ObservableProperty]
+        private string? _currentHumidity = "--";
+
+        [RelayCommand]
+        private void NavigateToSettings()
         {
-            get => _devices;
-            set => SetValue(ref _devices, value);
+            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+            mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
         }
 
 
-        private void GetDateTime()
+
+        //private ObservableCollection<DeviceItem> _devices;
+        //public ObservableCollection<DeviceItem> Devices
+        //{
+        //    get => _devices;
+        //    set => SetValue(ref _devices, value);
+        //}
+
+
+        private void UpdateDateAndTime()
         {
-            while (true)
+
+            _dateTimeService.TimeUpdated += () =>
             {
-                CurrentTime = _dateTimeService.CurrentTime;
                 CurrentDate = _dateTimeService.CurrentDate;
-                
-            }
+                CurrentTime = _dateTimeService.CurrentTime;
+
+            };
         }
 
-        private async Task GetDevicesAsync()
+
+        private void UpdateWeather()
         {
-            try
+
+            _weatherService.WeatherUpdated += () =>
             {
-                while (true)
-                {
-                    var twins = await _iotHub.GetDevicesAsTwinAsync();
-                    Devices.Clear();
-                    Devices = await _iotHub.GetDevicesAsDeviceItemAsync(twins);
-                    await Task.Delay(10000);
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
-
+                CurrentWeatherCondition = _weatherService.CurrentWeatherCondition;
+                CurrentTemperature = _weatherService.CurrentTemperature;
+                CurrentHumidity = _weatherService.CurrentHumidity;
+            };
         }
+
+
+        //private async Task GetDevicesAsync()
+        //{
+        //    try
+        //    {
+        //        while (true)
+        //        {
+        //            var twins = await _iotHub.GetDevicesAsTwinAsync();
+        //            Devices.Clear();
+        //            Devices = await _iotHub.GetDevicesAsDeviceItemAsync(twins);
+        //            await Task.Delay(10000);
+
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex.Message);
+        //    }
+
+
+        //}
     }
 }

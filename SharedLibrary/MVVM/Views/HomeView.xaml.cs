@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedLibrary.MVVM.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace SharedLibrary.MVVM.Views
         public HomeView()
         {
             InitializeComponent();
+
         }
+
     }
 }

@@ -10,24 +10,28 @@ namespace SharedLibrary.Services
     public class DateTimeService
     {
         private readonly Timer _timer;
+        public event Action? TimeUpdated;
 
-        public string? CurrentTime { get; private set; }
         public string? CurrentDate { get; private set; }
+        public string? CurrentTime { get; private set; }
 
-
-        public DateTimeService(int interval = 1000)
+        public DateTimeService()
         {
-            SetDateTime();
+            SetCurrentDateAndTime();
 
-            _timer = new Timer(interval);
-            _timer.Elapsed += (s, e) => SetDateTime();
+            _timer = new Timer(1000);
+            _timer.Elapsed += (s, e) => SetCurrentDateAndTime();
             _timer.Start();
         }
 
-        private void SetDateTime()
+
+
+        private void SetCurrentDateAndTime()
         {
             CurrentTime = DateTime.Now.ToString("HH:mm");
             CurrentDate = DateTime.Now.ToString("dddd, d MMMM yyyy");
+
+            TimeUpdated?.Invoke();
         }
 
 

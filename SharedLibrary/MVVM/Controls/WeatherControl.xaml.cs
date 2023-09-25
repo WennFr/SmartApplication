@@ -26,178 +26,57 @@ using SharedLibrary.MVVM.Models.Weather;
 namespace SharedLibrary.MVVM.Controls
 {
 
-    public partial class WeatherControl : UserControl, INotifyPropertyChanged
+    public partial class WeatherControl : UserControl
     {
-        private string? _temperature;
-        private string? _condition;
-        private string? _humidity;
-
-        public string? Temperature
-        {
-            get
-            {
-                return _temperature;
-            }
-            set
-            {
-                _temperature = value; OnPropertyChanged(nameof(Temperature));
-            }
-        }
-
-        public string? Condition
-        {
-            get
-            {
-                return _condition;
-            }
-            set
-            {
-                _condition = value; OnPropertyChanged(nameof(Condition));
-            }
-        }
-
-        public string? Humidity
-        {
-            get
-            {
-                return _humidity;
-            }
-            set
-            {
-                _humidity = value; OnPropertyChanged(nameof(Humidity));
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public WeatherControl()
         {
             InitializeComponent();
-            DataContext = this;
-            DispatcherTimer timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMinutes(15)
-            };
-            timer.Tick += async (s, e) => await GetWeatherAsync();
-            Loaded += async (s, e) => await GetWeatherAsync();
-            timer.Start();
         }
 
-        private async Task GetWeatherAsync()
+
+        public static readonly DependencyProperty ConditionProperty =
+            DependencyProperty.Register(
+                "Condition",
+                typeof(string),
+                typeof(WeatherControl),
+                new PropertyMetadata(string.Empty));
+
+        public string Condition
         {
-            using HttpClient http = new HttpClient();
-            try
-            {
-
-                var (latitude, longitude) = (59.3294, 18.0687);
-
-                var weatherResponse = await http.GetAsync($"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=relativehumidity_2m&current_weather=true");
-
-                if (weatherResponse.IsSuccessStatusCode)
-                {
-                    var json = await weatherResponse.Content.ReadAsStringAsync();
-                    var weatherData = JsonConvert.DeserializeObject<WeatherData>(json);
-                    Temperature = weatherData.Current_Weather.Temperature.ToString();
-                    Humidity = GetRelativeHumidity(weatherData).ToString();
-                    switch (weatherData.Current_Weather.WeatherCode)
-                    {
-                        case 0:
-                            Condition = "\ue28f"; // Clear sky
-                            break;
-                        case 1:
-                        case 2:
-                        case 3:
-                            Condition = "\uf6c4"; // Mainly clear, partly cloudy, and overcast
-                            break;
-                        case 45:
-                        case 48:
-                            Condition = "\uf74e"; // Fog and depositing rime fog
-                            break;
-                        case 51:
-                        case 53:
-                        case 55:
-                            Condition = "\uf738"; // Drizzle: Light, moderate, and dense intensity
-                            break;
-                        case 56:
-                        case 57:
-                            Condition = "\uf738"; // Freezing Drizzle: Light and dense intensity
-                            break;
-                        case 61:
-                        case 63:
-                        case 65:
-                            Condition = "\uf740"; // Rain: Slight, moderate, and heavy intensity
-                            break;
-                        case 66:
-                        case 67:
-                            Condition = "\uf740"; // Freezing Rain: Light and heavy intensity
-                            break;
-                        case 71:
-                        case 73:
-                        case 75:
-                            Condition = "\uf742"; // Snow fall: Slight, moderate, and heavy intensity
-                            break;
-                        case 77:
-                            Condition = "\uf742"; // Snow grains
-                            break;
-                        case 80:
-                        case 81:
-                        case 82:
-                            Condition = "\uf738"; // Rain showers: Slight, moderate, and violent
-                            break;
-                        case 85:
-                        case 86:
-                            Condition = "\uf742"; // Snow showers slight and heavy
-                            break;
-                        case 95:
-                            Condition = "\uf76c"; // Thunderstorm: Slight or moderate
-                            break;
-                        case 96:
-                        case 99:
-                            Condition = "\uf76c"; // Thunderstorm with slight and heavy hail
-                            break;
-                        default:
-                            Condition = "\ue137"; // Default icon
-                            break;
-                    }
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Failed to get weather data. Error: {ex.Message}");
-                Temperature = "--";
-            }
+            get { return (string)GetValue(ConditionProperty); }
+            set { SetValue(ConditionProperty, value); }
         }
 
-        public int GetRelativeHumidity(WeatherData weatherData)
+        public static readonly DependencyProperty TemperatureProperty =
+            DependencyProperty.Register(
+                "Temperature",
+                typeof(string),
+                typeof(WeatherControl),
+                new PropertyMetadata(string.Empty));
+
+        public string Temperature
         {
-            var currentTime = DateTime.Now;
-
-            int currentIndex = weatherData.Hourly.Time.IndexOf(currentTime.ToString("yyyy-MM-ddTHH:00"));
-
-            if (currentIndex != -1)
-            {
-                var currentHumidity = weatherData.Hourly.RelativeHumidity_2m[currentIndex];
-
-                return currentHumidity;
-            }
-
-            return 0;
+            get { return (string)GetValue(TemperatureProperty); }
+            set { SetValue(TemperatureProperty, value); }
         }
 
+        public static readonly DependencyProperty HumidityProperty =
+            DependencyProperty.Register(
+                "Humidity",
+                typeof(string),
+                typeof(WeatherControl),
+                new PropertyMetadata(string.Empty));
 
-
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        public string Humidity
         {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
+            get { return (string)GetValue(HumidityProperty); }
+            set { SetValue(HumidityProperty, value); }
         }
+
+
+
+
+
+
     }
 }

@@ -4,42 +4,62 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
-using SharedLibrary.MVVM.Core;
+using CommunityToolkit.Mvvm.Input;
 using SharedLibrary.MVVM.ViewModels;
 using SharedLibrary.Services;
 
 namespace SharedLibrary.MVVM.ViewModels
 {
-   public class SettingsViewModel : ObservableObject
+   public partial class SettingsViewModel : ObservableObject
     {
-        private readonly NavigationStore _navigationStore;
+        private readonly IServiceProvider _serviceProvider;
         private readonly DateTimeService _dateTimeService;
         private readonly IotHubManager _iotHub;
 
 
-        public SettingsViewModel(NavigationStore navigationStore, DateTimeService dateTimeService, IotHubManager iotHub)
+        public SettingsViewModel(IServiceProvider serviceProvider, DateTimeService dateTimeService, IotHubManager iotHub)
         {
-            _navigationStore = navigationStore;
+            _serviceProvider = serviceProvider;
             _dateTimeService = dateTimeService;
             _iotHub = iotHub;
         }
 
 
 
-        // Navigation
-        public ICommand NavigateToHomeCommand =>
-            new RelayCommand(() => _navigationStore.CurrentViewModel = new HomeViewModel(_navigationStore, _dateTimeService, _iotHub));
+        [RelayCommand]
+        private void NavigateToHome()
+        {
+            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+            mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<HomeViewModel>();
+        }
 
-        public ICommand CloseApplicationCommand =>
-            new RelayCommand(() => ApplicationService.CloseApplication());
+        [RelayCommand]
+        private void ShowAddDevice()
+        {
 
+        }
 
+        [RelayCommand]
+        private void ShowDeviceList()
+        {
 
-        private string? _title = "Settings";
-        public string? Title { get => _title; set => SetValue(ref _title, value); }
+        }
 
+        [RelayCommand]
+        private void ShowConfiguration()
+        {
 
+        }
+
+        [RelayCommand]
+        private void ExitApplication()
+        {
+            Environment.Exit(0);
+        }
 
 
 

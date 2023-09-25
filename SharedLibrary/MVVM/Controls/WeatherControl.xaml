@@ -14,16 +14,16 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal">
-            <TextBlock FontFamily="{StaticResource FontAwesome-Regular}" FontSize="50" Text="{Binding Condition, FallbackValue=&#xE137;}" Foreground="#cccccc" />
+            <TextBlock FontFamily="{StaticResource FontAwesome-Regular}" FontSize="50" Text="{Binding CurrentWeatherCondition, FallbackValue=&#xE137;}" Foreground="#cccccc" />
             <TextBlock FontSize="24" Margin="15 5 0 0 "  Foreground="#cccccc">
-                <Run Text="{Binding Temperature, FallbackValue=--}" FontSize="28"/>
+                <Run Text="{Binding CurrentTemperature, FallbackValue=--}" FontSize="28"/>
                 <Run Text="°C" FontSize="18" BaselineAlignment="Center" />
             </TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <TextBlock Text="Humidity: " FontSize="16" Margin="4 15 0 0" Foreground="#cccccc" />
-            <TextBlock Text="{Binding Humidity, StringFormat='{}{0}%'}" FontSize="16" Margin="5 15 0 0" Foreground="#cccccc" />
+            <TextBlock Text="{Binding CurrentHumidity, StringFormat='{}{0}%'}" FontSize="16" Margin="5 15 0 0" Foreground="#cccccc" />
         </StackPanel>
     </Grid>
 </UserControl>

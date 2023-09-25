@@ -18,66 +18,46 @@ using System.Windows.Threading;
 
 namespace SharedLibrary.MVVM.Controls
 {
- 
-    public partial class DateTimeControl : UserControl, INotifyPropertyChanged
+
+    public partial class DateTimeControl : UserControl
     {
-        private string? _currentTime;
-        private string? _currentDate;
-
-
-        public string? CurrentTime
-        {
-            get => _currentTime;
-            
-            set { _currentTime = value; OnPropertyChanged(nameof(CurrentTime)); }
-        }
-
-        public string? CurrentDate
-        {
-            get => _currentDate;
-           
-            set { _currentDate = value; OnPropertyChanged(nameof(CurrentDate)); }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-
-
+        
         public DateTimeControl()
         {
             InitializeComponent();
-            DataContext = this;
-            SetDateTime();
-
-
-            DispatcherTimer timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1),
-            };
-            timer.Tick += (s, e) => SetDateTime();
-
-            timer.Start();
         }
 
-        private void SetDateTime()
+
+
+        public static readonly DependencyProperty CurrentTimeProperty =
+            DependencyProperty.Register(
+                "CurrentTime",
+                typeof(string),
+                typeof(DateTimeControl),
+                new PropertyMetadata(string.Empty));
+
+        public string CurrentTime
         {
-            CurrentTime = DateTime.Now.ToString("HH:mm");
-            CurrentDate = DateTime.Now.ToString("dddd, d MMMM yyyy");
+            get { return (string)GetValue(CurrentTimeProperty); }
+            set { SetValue(CurrentTimeProperty, value); }
         }
 
-   
+        public static readonly DependencyProperty CurrentDateProperty =
+            DependencyProperty.Register(
+                "CurrentDate",
+                typeof(string),
+                typeof(DateTimeControl),
+                new PropertyMetadata(string.Empty));
 
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        public string CurrentDate
         {
-            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-            field = value;
-            OnPropertyChanged(propertyName);
-            return true;
+            get { return (string)GetValue(CurrentDateProperty); }
+            set { SetValue(CurrentDateProperty, value); }
         }
     }
+
+
 }
+
+
+
