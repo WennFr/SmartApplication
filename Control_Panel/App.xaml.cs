@@ -10,7 +10,7 @@ using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
-using SharedLibrary.Models;
+using SharedLibrary.MVVM.Models;
 using SharedLibrary.Services;
 using SharedLibrary.MVVM.ViewModels;
 

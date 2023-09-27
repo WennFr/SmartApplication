@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure.Devices.Shared;
 using SharedLibrary.Handlers.Services;
-using SharedLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
