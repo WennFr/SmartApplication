@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace SharedLibrary.MVVM.Models
 {
@@ -11,6 +13,7 @@ namespace SharedLibrary.MVVM.Models
 
         public DeviceItem()
         {
+            StartStopButtonCommand = new RelayCommand(ExecuteStartStopButtonCommand);
         }
 
 
@@ -35,6 +38,14 @@ namespace SharedLibrary.MVVM.Models
                     return "\uf2db";
             }
 
+        }
+
+
+        public ICommand StartStopButtonCommand { get; }
+
+        private void ExecuteStartStopButtonCommand()
+        {
+            // Your logic for starting/stopping the device here
         }
 
     }

@@ -40,6 +40,8 @@
                 <!--Settings Button Section-->
                 <Button Grid.Column="2" Command="{Binding NavigateToSettingsCommand }"  Style="{StaticResource SettingsButton}"/>
 
+              
+
 
             </Grid>
 
@@ -51,9 +53,13 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <controls:DeviceTileControl />
+                <ItemsControl.ItemTemplate >
+                    <DataTemplate >
+                        <!--<controls:DeviceTileControl />-->
+                        <Button Style="{StaticResource DeviceTile}" Content="Start/Stop" 
+                                Command="{Binding DataContext.ExecuteStartStopButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                CommandParameter="{Binding}" 
+                                DataContext="{Binding}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

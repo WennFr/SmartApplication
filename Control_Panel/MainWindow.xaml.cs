@@ -33,70 +33,7 @@ namespace Control_Panel
         }
 
 
-        //private async void StartButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button;
-
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin;
-
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHub.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "start"
-        //                    });
-        //            }
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
-
-
-        //}
-
-        //private async void StopButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button;
-
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin;
-
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHub.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "stop"
-        //                    });
-
-        //            }
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
-        //}
+       
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {

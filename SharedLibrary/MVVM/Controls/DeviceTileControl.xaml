@@ -7,8 +7,13 @@
              mc:Ignorable="d" 
              >
 
-    <Button Style="{StaticResource DeviceTile}"  />
+
+<!--<Button Style="{StaticResource DeviceTile}"  />-->
+
+<!--<Button Style="{StaticResource DeviceTile}" Content="Start/Stop" 
+        Command="{Binding DataContext.ExecuteStartStopButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+        CommandParameter="{Binding}" 
+        DataContext="{Binding}" />-->
 
 
-    
 </UserControl>
