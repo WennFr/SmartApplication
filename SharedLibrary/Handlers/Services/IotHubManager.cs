@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Azure.Messaging.EventHubs.Consumer;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Shared;
@@ -20,6 +21,8 @@ namespace SharedLibrary.Handlers.Services
         private EventHubConsumerClient _consumerClient;
 
         public event Action? DevicesUpdated;
+        private readonly Timer _timer;
+
 
         public ObservableCollection<DeviceItem>? CurrentDevices { get; private set; }
 
@@ -31,6 +34,11 @@ namespace SharedLibrary.Handlers.Services
             _consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndpoint);
 
             Task.Run(SetAllDevicesAsync);
+
+            //_timer = new Timer(1000);
+            //_timer.Elapsed += async (s, e) => await SetAllDevicesAsync();
+            //_timer.Start();
+
             //SetAllDevicesAsync().GetAwaiter().GetResult();
 
         }
@@ -50,7 +58,9 @@ namespace SharedLibrary.Handlers.Services
 
                 var result = await _serviceClient.InvokeDeviceMethodAsync(req.DeviceId, cloudMethod);
                 if (result != null)
+                {
                     return result;
+                }
 
             }
 
@@ -77,7 +87,7 @@ namespace SharedLibrary.Handlers.Services
                 var devicesTwin = await GetDevicesAsTwinAsync(sqlQuery);
 
                 if (devicesTwin != null)
-                    CurrentDevices = GetDevicesAsDeviceItemAsync(devicesTwin);
+                    CurrentDevices = await GetDevicesAsDeviceItemAsync(devicesTwin);
             }
             catch (Exception e)
             {
@@ -116,7 +126,7 @@ namespace SharedLibrary.Handlers.Services
 
         }
 
-        public ObservableCollection<DeviceItem> GetDevicesAsDeviceItemAsync(IEnumerable<Twin> twins)
+        public async Task<ObservableCollection<DeviceItem>> GetDevicesAsDeviceItemAsync(IEnumerable<Twin> twins)
         {
 
             try

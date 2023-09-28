@@ -42,7 +42,6 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-
                             <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding IsActive}" Value="True">

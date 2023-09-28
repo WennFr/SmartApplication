@@ -38,7 +38,7 @@ namespace SharedLibrary.MVVM.ViewModels
 
             UpdateDateAndTime();
             UpdateWeather();
-            UpdateDevices();
+            Task.Run(UpdateDevices);
         }
 
         [ObservableProperty]
@@ -75,6 +75,7 @@ namespace SharedLibrary.MVVM.ViewModels
         {
             try
             {
+
                 if (parameter is DeviceItem device)
                 {
                     if (device.IsActive)
@@ -84,12 +85,14 @@ namespace SharedLibrary.MVVM.ViewModels
                         // Stop the device
                         if (!string.IsNullOrEmpty(deviceId))
                         {
-                             await _iotHub.SendMethodAsync(new MethodDataRequest
+                            await _iotHub.SendMethodAsync(new MethodDataRequest
                             {
                                 DeviceId = deviceId,
                                 MethodName = "stop"
                             });
+
                         }
+
                     }
 
 
@@ -104,10 +107,15 @@ namespace SharedLibrary.MVVM.ViewModels
                                 DeviceId = deviceId,
                                 MethodName = "start"
                             });
+
+                            
                         }
                     }
 
+                    await Task.Delay(TimeSpan.FromSeconds(2)); 
 
+                    await _iotHub.SetAllDevicesAsync();
+                    await UpdateDevices();
                 }
 
 
@@ -145,83 +153,47 @@ namespace SharedLibrary.MVVM.ViewModels
         }
 
 
-        private void UpdateDevices()
-        {
+     
 
-            _iotHub.DevicesUpdated += () =>
+        private async Task UpdateDevices()
+        {
+            try
             {
-                _devices = _iotHub.CurrentDevices;
-            };
+                // Update the devices asynchronously
+                await Task.Run(() =>
+                {
+                    _iotHub.DevicesUpdated += () =>
+                    {
+                        // Marshal the UI update to the UI thread
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Devices = _iotHub.CurrentDevices;
+                        });
+                    };
+
+                    // Don't perform any actual work here; just subscribe to updates
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
 
-      
-
-        //private async void StartButton_Click(object sender, RoutedEventArgs e)
+        //private void UpdateDevices()
         //{
-        //    try
+
+
+        //    _iotHub.DevicesUpdated += () =>
         //    {
-        //        Button? button = sender as Button;
 
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin;
+        //        Devices = _iotHub.CurrentDevices;
+        //    };
 
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHub.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "start"
-        //                    });
-        //            }
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
 
 
         //}
-
-        //private async void StopButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Button? button = sender as Button;
-
-        //        if (button != null)
-        //        {
-        //            Twin? twin = button.DataContext as Twin;
-
-        //            if (twin != null)
-        //            {
-        //                string deviceId = twin.DeviceId;
-
-
-        //                if (!string.IsNullOrEmpty(deviceId))
-        //                    await _iotHub.SendMethodAsync(new MethodDataRequest
-        //                    {
-        //                        DeviceId = deviceId,
-        //                        MethodName = "stop"
-        //                    });
-
-        //            }
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex.Message);
-        //    }
-        //}
-
 
     }
 }

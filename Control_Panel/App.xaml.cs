@@ -60,7 +60,7 @@ namespace Control_Panel
 
             var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
-            ;
+
             base.OnStartup(args);
         }
     }
