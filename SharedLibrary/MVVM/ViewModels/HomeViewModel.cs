@@ -75,7 +75,6 @@ namespace SharedLibrary.MVVM.ViewModels
         {
             try
             {
-
                 if (parameter is DeviceItemViewModel device)
                 {
                     if (device.IsActive)
@@ -90,12 +89,8 @@ namespace SharedLibrary.MVVM.ViewModels
                                 DeviceId = deviceId,
                                 MethodName = "stop"
                             });
-
                         }
-
                     }
-
-
                     else
                     {
                         // Start the device
@@ -165,7 +160,7 @@ namespace SharedLibrary.MVVM.ViewModels
                         // Marshal the UI update to the UI thread
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            Devices = ConvertToViewModels(_iotHub.CurrentDevices);
+                            Devices = ConvertToDeviceItemViewModels(_iotHub.CurrentDevices);
                         });
                     };
 
@@ -177,7 +172,7 @@ namespace SharedLibrary.MVVM.ViewModels
             }
         }
 
-        private ObservableCollection<DeviceItemViewModel> ConvertToViewModels(ObservableCollection<DeviceItem> devices)
+        private ObservableCollection<DeviceItemViewModel> ConvertToDeviceItemViewModels(ObservableCollection<DeviceItem> devices)
         {
             var deviceViewModels = new ObservableCollection<DeviceItemViewModel>();
 
