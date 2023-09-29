@@ -21,6 +21,7 @@ namespace SharedLibrary.MVVM.Models
         public string? DeviceId { get; set; }
         public string? DeviceType { get; set; }
         public string? Placement { get; set; }
+
         private bool _isActive;
 
         public bool IsActive 
@@ -36,32 +37,12 @@ namespace SharedLibrary.MVVM.Models
             }
         }
 
-        public string? Icon => SetIcon();
-
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        private string SetIcon()
-        {
-            switch (DeviceType?.ToLower())
-            {
-                case "lamp":
-                    return "\uf0eb";
-
-                case "fan":
-                    return "\ue004";
-
-                default:
-                    return "\uf2db";
-            }
-
-        }
-
 
     }
 }

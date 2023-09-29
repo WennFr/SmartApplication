@@ -60,7 +60,7 @@ namespace SharedLibrary.MVVM.ViewModels
         private string? _currentHumidity = "--";
 
         [ObservableProperty]
-        private ObservableCollection<DeviceItem>? _devices;
+        private ObservableCollection<DeviceItemViewModel>? _devices;
 
         [RelayCommand]
         private void NavigateToSettings(object parameter)
@@ -76,7 +76,7 @@ namespace SharedLibrary.MVVM.ViewModels
             try
             {
 
-                if (parameter is DeviceItem device)
+                if (parameter is DeviceItemViewModel device)
                 {
                     if (device.IsActive)
                     {
@@ -153,8 +153,6 @@ namespace SharedLibrary.MVVM.ViewModels
         }
 
 
-     
-
         private async Task UpdateDevices()
         {
             try
@@ -167,11 +165,10 @@ namespace SharedLibrary.MVVM.ViewModels
                         // Marshal the UI update to the UI thread
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            Devices = _iotHub.CurrentDevices;
+                            Devices = ConvertToViewModels(_iotHub.CurrentDevices);
                         });
                     };
 
-                    // Don't perform any actual work here; just subscribe to updates
                 });
             }
             catch (Exception ex)
@@ -180,20 +177,18 @@ namespace SharedLibrary.MVVM.ViewModels
             }
         }
 
+        private ObservableCollection<DeviceItemViewModel> ConvertToViewModels(ObservableCollection<DeviceItem> devices)
+        {
+            var deviceViewModels = new ObservableCollection<DeviceItemViewModel>();
 
-        //private void UpdateDevices()
-        //{
+            foreach (var deviceItem in devices)
+            {
+                var deviceViewModel = new DeviceItemViewModel(deviceItem);
+                deviceViewModels.Add(deviceViewModel);
+            }
 
-
-        //    _iotHub.DevicesUpdated += () =>
-        //    {
-
-        //        Devices = _iotHub.CurrentDevices;
-        //    };
-
-
-
-        //}
+            return deviceViewModels;
+        }
 
     }
 }

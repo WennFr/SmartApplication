@@ -30,7 +30,7 @@
                 />
                 <Button  Content="&#xf013;" Style="{StaticResource MenuButton}"
                 />
-                <Button  Content="&#xf011;" Command="{Binding CloseApplicationCommand}" Style="{StaticResource MenuButton}"
+                <Button  Content="&#xf011;" Command="{Binding ExitApplicationCommand}" Style="{StaticResource MenuButton}"
                 />
 
 

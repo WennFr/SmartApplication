@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-                    xmlns:models="clr-namespace:SharedLibrary.MVVM.Models;assembly=SharedLibrary">
+                    xmlns:models="clr-namespace:SharedLibrary.MVVM.Models;assembly=SharedLibrary"
+                    xmlns:viewmodels="clr-namespace:SharedLibrary.MVVM.ViewModels;assembly=SharedLibrary">
 
 
 
@@ -28,7 +29,7 @@
                     <Border x:Name="buttonBorder" Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="Transparent">
                         <ContentPresenter Content="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <ContentPresenter.ContentTemplate>
-                                <DataTemplate DataType="{x:Type models:DeviceItem}">
+                                <DataTemplate DataType="{x:Type viewmodels:DeviceItemViewModel}">
                                     <Grid>
                                         <StackPanel>
                                             <TextBlock Text="{Binding Icon, FallbackValue=&#xf2db;}" FontFamily="{StaticResource FontAwesome-Regular}"  FontSize="80" Foreground="#ffffff" Margin="0 0 0 20"/>
