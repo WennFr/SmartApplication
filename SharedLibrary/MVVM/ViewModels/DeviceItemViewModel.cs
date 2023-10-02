@@ -25,11 +25,11 @@ namespace SharedLibrary.MVVM.ViewModels
 
         public string DeviceType => _deviceItem.DeviceType;
 
-        [ObservableProperty] 
-        bool isActive;
+        [ObservableProperty]
+         bool isActive;
 
         [ObservableProperty]
-        string icon;
+         string icon;
 
 
         private string SetIcon()

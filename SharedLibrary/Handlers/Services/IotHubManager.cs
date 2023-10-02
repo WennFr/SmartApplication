@@ -19,12 +19,10 @@ namespace SharedLibrary.Handlers.Services
         private RegistryManager _registryManager;
         private ServiceClient _serviceClient;
         private EventHubConsumerClient _consumerClient;
+        private readonly System.Timers.Timer _timer;
 
         public event Action? DevicesUpdated;
-        private readonly Timer _timer;
-
-
-        public ObservableCollection<DeviceItem>? CurrentDevices { get; private set; }
+        public List<DeviceItem>? CurrentDevices { get; private set; }
 
         public IotHubManager(IotHubManagerOptions options)
         {
@@ -33,13 +31,12 @@ namespace SharedLibrary.Handlers.Services
             _serviceClient = ServiceClient.CreateFromConnectionString(options.IotHubConnectionString);
             _consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndpoint);
 
-            Task.Run(SetAllDevicesAsync);
 
-            //_timer = new Timer(1000);
-            //_timer.Elapsed += async (s, e) => await SetAllDevicesAsync();
-            //_timer.Start();
+            CurrentDevices = new List<DeviceItem>();
 
-            //SetAllDevicesAsync().GetAwaiter().GetResult();
+            _timer = new System.Timers.Timer(5000);
+            _timer.Elapsed += async (s, e) => await SetAllDevicesAsync();
+            _timer.Start();
 
         }
 
@@ -69,15 +66,11 @@ namespace SharedLibrary.Handlers.Services
                 Debug.WriteLine(ex);
             }
 
-            return null;
+            return null!;
         }
-
-
-
-
         public async Task SetAllDevicesAsync()
         {
-
+            var updated = false;
 
             try
             {
@@ -87,35 +80,51 @@ namespace SharedLibrary.Handlers.Services
                 var devicesTwin = await GetDevicesAsTwinAsync(sqlQuery);
 
                 if (devicesTwin != null)
+                {
                     CurrentDevices = await GetDevicesAsDeviceItemAsync(devicesTwin);
+                    updated = true;
+
+                }
+
+
+                for (int i = CurrentDevices.Count - 1; i >= 0; i--)
+                {
+                    if (!devicesTwin.Any(x => x.DeviceId == CurrentDevices[i].DeviceId))
+                    {
+                        CurrentDevices.RemoveAt(i);
+                        updated = true;
+                    }
+                }
+
+
+                if (updated)
+                    DevicesUpdated?.Invoke();
             }
-            catch (Exception e)
+
+
+            catch (Exception ex)
             {
                 CurrentDevices = null!;
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
 
 
-
-            DevicesUpdated?.Invoke();
-
         }
-
-
-
         public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery)
         {
             try
             {
 
-                var devices = new List<Twin>();
+                var devicesTwin = new List<Twin>();
                 var result = _registryManager.CreateQuery(sqlQuery);
 
                 if (result.HasMoreResults)
-                    foreach (var device in await result.GetNextAsTwinAsync())
-                        devices.Add(device);
+                    foreach (var twin in await result.GetNextAsTwinAsync())
+                        devicesTwin.Add(twin);
 
 
-                return devices;
+                return devicesTwin;
             }
             catch (Exception ex)
             {
@@ -126,14 +135,14 @@ namespace SharedLibrary.Handlers.Services
 
         }
 
-        public async Task<ObservableCollection<DeviceItem>> GetDevicesAsDeviceItemAsync(IEnumerable<Twin> twins)
+        public async Task<List<DeviceItem>> GetDevicesAsDeviceItemAsync(IEnumerable<Twin> devicesTwin)
         {
 
             try
             {
-                var deviceItems = new ObservableCollection<DeviceItem>();
+                var deviceItems = new List<DeviceItem>();
 
-                foreach (var twin in twins)
+                foreach (var twin in devicesTwin)
                 {
 
                     var isActive = false;
@@ -151,6 +160,7 @@ namespace SharedLibrary.Handlers.Services
                         DeviceType = deviceType,
                         IsActive = isActive
                     });
+
                 }
 
                 return deviceItems;
@@ -165,12 +175,6 @@ namespace SharedLibrary.Handlers.Services
 
             return null!;
         }
-
-
-
-
-
-
 
         public async Task<IEnumerable<string>> GetDevicesAsJsonAsync(string sqlQuery = "select * from  devices")
         {

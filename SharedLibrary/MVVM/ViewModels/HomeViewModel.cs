@@ -38,7 +38,9 @@ namespace SharedLibrary.MVVM.ViewModels
 
             UpdateDateAndTime();
             UpdateWeather();
-            Task.Run(UpdateDevices);
+
+            UpdateDeviceList();
+            _iotHub.DevicesUpdated += UpdateDeviceList;
         }
 
         [ObservableProperty]
@@ -107,14 +109,13 @@ namespace SharedLibrary.MVVM.ViewModels
                         }
                     }
 
-                    await Task.Delay(TimeSpan.FromSeconds(2)); 
+                    //await Task.Delay(TimeSpan.FromSeconds(2)); 
 
-                    await _iotHub.SetAllDevicesAsync();
-                    await UpdateDevices();
+                    //await _iotHub.SetAllDevicesAsync();
+                    //await UpdateDevices();
                 }
 
 
-                // Toggle the device state
             }
             catch (Exception ex)
             {
@@ -148,16 +149,23 @@ namespace SharedLibrary.MVVM.ViewModels
         }
 
 
+
+        private void UpdateDeviceList()
+        {
+            Devices = new ObservableCollection<DeviceItemViewModel>(_iotHub.CurrentDevices
+                .Select(device => new DeviceItemViewModel(device)).ToList());
+        }
+
+
+
         private async Task UpdateDevices()
         {
             try
             {
-                // Update the devices asynchronously
                 await Task.Run(() =>
                 {
                     _iotHub.DevicesUpdated += () =>
                     {
-                        // Marshal the UI update to the UI thread
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             Devices = ConvertToDeviceItemViewModels(_iotHub.CurrentDevices);
@@ -172,7 +180,7 @@ namespace SharedLibrary.MVVM.ViewModels
             }
         }
 
-        private ObservableCollection<DeviceItemViewModel> ConvertToDeviceItemViewModels(ObservableCollection<DeviceItem> devices)
+        private ObservableCollection<DeviceItemViewModel> ConvertToDeviceItemViewModels(List<DeviceItem> devices)
         {
             var deviceViewModels = new ObservableCollection<DeviceItemViewModel>();
 
