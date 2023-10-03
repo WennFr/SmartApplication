@@ -39,35 +39,6 @@ namespace SharedLibrary.Handlers.Services
             _timer.Start();
 
         }
-
-        public async Task<CloudToDeviceMethodResult> SendMethodAsync(MethodDataRequest req)
-        {
-            try
-            {
-                var cloudMethod = new CloudToDeviceMethod(req.MethodName)
-                {
-                    ConnectionTimeout = new TimeSpan(req.ResponseTimeout)
-                };
-
-
-                if (req.Payload != null)
-                    cloudMethod.SetPayloadJson(JsonConvert.SerializeObject(req.Payload));
-
-                var result = await _serviceClient.InvokeDeviceMethodAsync(req.DeviceId, cloudMethod);
-                if (result != null)
-                {
-                    return result;
-                }
-
-            }
-
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-
-            return null!;
-        }
         public async Task SetAllDevicesAsync()
         {
             var updated = false;
@@ -176,27 +147,33 @@ namespace SharedLibrary.Handlers.Services
             return null!;
         }
 
-        public async Task<IEnumerable<string>> GetDevicesAsJsonAsync(string sqlQuery = "select * from  devices")
+        public async Task<CloudToDeviceMethodResult> SendMethodAsync(MethodDataRequest req)
         {
             try
             {
+                var cloudMethod = new CloudToDeviceMethod(req.MethodName)
+                {
+                    ConnectionTimeout = new TimeSpan(req.ResponseTimeout)
+                };
 
-                var devices = new List<string>();
-                var result = _registryManager.CreateQuery(sqlQuery);
 
-                if (result.HasMoreResults)
-                    foreach (var device in await result.GetNextAsJsonAsync())
-                        devices.Add(device);
+                if (req.Payload != null)
+                    cloudMethod.SetPayloadJson(JsonConvert.SerializeObject(req.Payload));
 
-                return devices;
+                var result = await _serviceClient.InvokeDeviceMethodAsync(req.DeviceId, cloudMethod);
+                if (result != null)
+                {
+                    return result;
+                }
+
             }
+
             catch (Exception ex)
             {
-                Debug.WriteLine($"{ex.Message}");
+                Debug.WriteLine(ex);
             }
 
             return null!;
-
         }
 
 

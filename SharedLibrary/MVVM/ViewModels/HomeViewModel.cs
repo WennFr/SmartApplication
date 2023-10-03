@@ -108,23 +108,13 @@ namespace SharedLibrary.MVVM.ViewModels
                             
                         }
                     }
-
-                    //await Task.Delay(TimeSpan.FromSeconds(2)); 
-
-                    //await _iotHub.SetAllDevicesAsync();
-                    //await UpdateDevices();
                 }
-
-
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
         }
-
-
-
 
         private void UpdateDateAndTime()
         {
@@ -158,40 +148,40 @@ namespace SharedLibrary.MVVM.ViewModels
 
 
 
-        private async Task UpdateDevices()
-        {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    _iotHub.DevicesUpdated += () =>
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            Devices = ConvertToDeviceItemViewModels(_iotHub.CurrentDevices);
-                        });
-                    };
+        //private async Task UpdateDevices()
+        //{
+        //    try
+        //    {
+        //        await Task.Run(() =>
+        //        {
+        //            _iotHub.DevicesUpdated += () =>
+        //            {
+        //                Application.Current.Dispatcher.Invoke(() =>
+        //                {
+        //                    Devices = ConvertToDeviceItemViewModels(_iotHub.CurrentDevices);
+        //                });
+        //            };
 
-                });
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-        }
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex.Message);
+        //    }
+        //}
 
-        private ObservableCollection<DeviceItemViewModel> ConvertToDeviceItemViewModels(List<DeviceItem> devices)
-        {
-            var deviceViewModels = new ObservableCollection<DeviceItemViewModel>();
+        //private ObservableCollection<DeviceItemViewModel> ConvertToDeviceItemViewModels(List<DeviceItem> devices)
+        //{
+        //    var deviceViewModels = new ObservableCollection<DeviceItemViewModel>();
 
-            foreach (var deviceItem in devices)
-            {
-                var deviceViewModel = new DeviceItemViewModel(deviceItem);
-                deviceViewModels.Add(deviceViewModel);
-            }
+        //    foreach (var deviceItem in devices)
+        //    {
+        //        var deviceViewModel = new DeviceItemViewModel(deviceItem);
+        //        deviceViewModels.Add(deviceViewModel);
+        //    }
 
-            return deviceViewModels;
-        }
+        //    return deviceViewModels;
+        //}
 
     }
 }
