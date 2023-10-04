@@ -42,6 +42,9 @@ namespace SharedLibrary.MVVM.ViewModels
                 case "fan":
                     return "\ue004";
 
+                case "printer":
+                    return "\uf02f";
+
                 default:
                     return "\uf2db";
             }
