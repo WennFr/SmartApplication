@@ -24,7 +24,7 @@
                 <Rectangle Fill="#000000" Width="80"/>
 
 
-                <Button Content="&#x2b;" Style="{StaticResource MenuButton}" 
+                <Button Content="&#x2b;" Command="{Binding ShowAddDeviceCommand}" Style="{StaticResource MenuButton}" 
                 />
                 <Button Content="&#xf03a;" Style="{StaticResource MenuButton}"
                 />
