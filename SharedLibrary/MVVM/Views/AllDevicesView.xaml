@@ -16,42 +16,43 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-           
+
 
             <!-- Header Section -->
             <TextBlock Grid.Row="0" Text="All Devices" Foreground="#cccccc" VerticalAlignment="Center"  Margin="0,0,0,20" FontSize="22"/>
-            <!-- Dynamic Device List Section -->
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding Devices}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
 
-                            <!--<TextBlock Text="{Binding DeviceId}" Foreground="#cccccc" Grid.Column="0"/>-->
-                            <StackPanel Grid.Column="1" Margin="0, 15">
-                                <TextBlock Text="Device Id:" Foreground="White" FontSize="16"/>
-                                <TextBlock Text="{Binding DeviceId}" Foreground="#cccccc"/>
-                                <TextBlock Text="Device Type:" Foreground="White" FontSize="16"/>
-                                <TextBlock Text="{Binding DeviceType}" Foreground="#cccccc"/>
-                                <TextBlock Text="Active status:" Foreground="White" FontSize="16"/>
-                                <TextBlock Text="{Binding IsActive}" Foreground="#cccccc"/>
-                            </StackPanel>
-                            <!--<Button Grid.Column="2"   Content="Remove" Command="{Binding RemoveDeviceCommand}" CommandParameter="{Binding}"  Width="80" Height="30"/>-->
+            <!--Device List Section -->
 
-                            <Button Grid.Column="2"  Content="Remove" 
+            <ScrollViewer Grid.Row="1" Margin="0, 20,0,0">
+                <ItemsControl ItemsSource="{Binding Devices}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="1" Margin="0, 0,0,15">
+                                    <TextBlock Text="Device Id:" Foreground="White" FontSize="16"/>
+                                    <TextBlock Text="{Binding DeviceId}" Foreground="#cccccc"/>
+                                    <TextBlock Text="Device Type:" Foreground="White" FontSize="16"/>
+                                    <TextBlock Text="{Binding DeviceType}" Foreground="#cccccc"/>
+                                    <TextBlock Text="Active status:" Foreground="White" FontSize="16"/>
+                                    <TextBlock Text="{Binding IsActive}" Foreground="#cccccc"/>
+                                </StackPanel>
+
+                                <Button Grid.Column="2"  Content="Remove" 
                                     Command="{Binding DataContext.RemoveDeviceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
                                     CommandParameter="{Binding}" 
                                     DataContext="{Binding}" Width="80" Height="30" />
 
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
             <!--Cancel Button Section-->
             <Button Grid.Row="0" Command="{Binding NavigateToSettingsCommand }" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="50,0,0,0"  Style="{StaticResource CancelButton}"/>
 

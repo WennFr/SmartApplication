@@ -39,11 +39,12 @@ namespace SharedLibrary.Handlers.Services
             CurrentDevices = new List<DeviceItem>();
 
             _timer = new System.Timers.Timer(5000);
-            _timer.Elapsed += async (s, e) => await SetAllDevicesAsync();
+            _timer.Elapsed += async (s, e) => await GetAllDevicesAsync();
             _timer.Start();
 
         }
-        public async Task SetAllDevicesAsync()
+
+        public async Task GetAllDevicesAsync()
         {
             var updated = false;
 
@@ -86,6 +87,7 @@ namespace SharedLibrary.Handlers.Services
 
 
         }
+
         public async Task<IEnumerable<Twin>> GetDevicesAsTwinAsync(string sqlQuery)
         {
             try
@@ -122,7 +124,9 @@ namespace SharedLibrary.Handlers.Services
 
                     var isActive = false;
                     if (twin.Properties?.Reported.Contains("deviceOn") == true)
-                        isActive = bool.TryParse(twin.Properties.Reported["deviceOn"].ToString(), out bool parsedValue) ? parsedValue : isActive;
+                        isActive = bool.TryParse(twin.Properties.Reported["deviceOn"].ToString(), out bool parsedValue)
+                            ? parsedValue
+                            : isActive;
 
 
                     var deviceType = "Unknown";
@@ -181,7 +185,7 @@ namespace SharedLibrary.Handlers.Services
         }
 
 
-        public async Task<bool> RegisterDevice(string deviceId, string deviceType, string location )
+        public async Task<bool> RegisterDevice(string deviceId, string deviceType, string location)
         {
 
             var connectionString = string.Empty;
@@ -189,7 +193,9 @@ namespace SharedLibrary.Handlers.Services
             try
             {
                 using var httpClient = new HttpClient();
-                var result = await httpClient.PostAsync($"http://localhost:7193/api/DeviceRegistration?deviceId={deviceId}", null!);
+                var result =
+                    await httpClient.PostAsync($"http://localhost:7193/api/DeviceRegistration?deviceId={deviceId}",
+                        null!);
                 connectionString = await result.Content.ReadAsStringAsync();
 
                 deviceClient = DeviceClient.CreateFromConnectionString(connectionString, TransportType.Mqtt);
@@ -200,11 +206,24 @@ namespace SharedLibrary.Handlers.Services
 
                 return true;
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+            }
 
             return false;
         }
 
-    }
+        public async Task RemoveDevice(string deviceId)
+        {
+            try
+            {
+                await _registryManager.RemoveDeviceAsync(deviceId);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
 
+    }
 }

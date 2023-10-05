@@ -29,8 +29,6 @@ namespace SharedLibrary.MVVM.ViewModels
         [ObservableProperty]
         private ObservableCollection<DeviceItemViewModel>? _devices;
 
-
-
         [RelayCommand]
         private void NavigateToSettings()
         {
@@ -39,22 +37,20 @@ namespace SharedLibrary.MVVM.ViewModels
         }
 
         [RelayCommand]
-        private void RemoveDevice(object parameter)
+        private async Task RemoveDevice(object parameter)
         {
             try
             {
                 if (parameter is DeviceItemViewModel device)
                 {
-
+                    // Call the RemoveDevice method in IotHubManager
+                    await _iotHub.RemoveDevice(device.DeviceId);
                 }
-
             }
-
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
-
         }
 
         private void UpdateDeviceList()
