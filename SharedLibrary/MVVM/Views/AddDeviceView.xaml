@@ -30,18 +30,18 @@
 
             <!-- Device ID Section -->
             <TextBlock Grid.Row="1" Text="Device ID:" Foreground="White" VerticalAlignment="Center"  FontSize="16"/>
-            <TextBox Grid.Row="1" Width="300" Margin="0,15"/>
+            <TextBox Grid.Row="1" Width="300" Margin="0,15" Text="{Binding DeviceId, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Device Type Section -->
             <TextBlock Grid.Row="2" Text="Device Type:" Foreground="White" VerticalAlignment="Center"  FontSize="16"/>
-            <TextBox Grid.Row="2" Width="300" Margin="0,15"/>
+            <TextBox Grid.Row="2" Width="300" Margin="0,15" Text="{Binding DeviceType, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Location Section -->
             <TextBlock Grid.Row="4" Text="Location:" Foreground="White" VerticalAlignment="Center" FontSize="16"/>
-            <TextBox Grid.Row="4" Width="300" Margin="0,15"/>
+            <TextBox Grid.Row="4" Width="300" Margin="0,15" Text="{Binding Location, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Submit Button Section -->
-            <Button Grid.Row="5" Content="Submit" Command="{Binding AddDeviceCommand}" Width="100" Height="40" VerticalAlignment="Center" Margin="0,20,200,20"/>
+            <Button Grid.Row="5" Content="Submit" Command="{Binding RegisterNewDeviceCommand}" Width="100" Height="40" VerticalAlignment="Center" Margin="0,20,200,20"/>
 
             <!--Cancel Button Section-->
             <Button Grid.Row="0" Command="{Binding NavigateToSettingsCommand }" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="50,0,0,0"  Style="{StaticResource CancelButton}"/>

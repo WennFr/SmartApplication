@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace SharedLibrary.MVVM.Views
 {
-    /// <summary>
-    /// Interaction logic for AddDeviceView.xaml
-    /// </summary>
     public partial class AddDeviceView : UserControl
     {
         public AddDeviceView()

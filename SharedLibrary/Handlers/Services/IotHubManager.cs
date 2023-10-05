@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Azure.Messaging.EventHubs.Consumer;
 using Microsoft.Azure.Devices;
+using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
 using SharedLibrary.MVVM.Models;
+using TransportType = Microsoft.Azure.Devices.Client.TransportType;
 
 namespace SharedLibrary.Handlers.Services
 {
@@ -19,6 +22,7 @@ namespace SharedLibrary.Handlers.Services
         private RegistryManager _registryManager;
         private ServiceClient _serviceClient;
         private EventHubConsumerClient _consumerClient;
+        private DeviceClient deviceClient = null!;
         private readonly System.Timers.Timer _timer;
 
         public event Action? DevicesUpdated;
@@ -177,6 +181,29 @@ namespace SharedLibrary.Handlers.Services
         }
 
 
+        public async Task<bool> RegisterDevice(string deviceId, string deviceType, string location )
+        {
+
+            var connectionString = string.Empty;
+
+            try
+            {
+                using var httpClient = new HttpClient();
+                var result = await httpClient.PostAsync($"http://localhost:7193/api/DeviceRegistration?deviceId={deviceId}", null!);
+                connectionString = await result.Content.ReadAsStringAsync();
+
+                deviceClient = DeviceClient.CreateFromConnectionString(connectionString, TransportType.Mqtt);
+
+                var twinCollection = new TwinCollection();
+                twinCollection["deviceType"] = $"{deviceType}";
+                await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
+
+                return true;
+            }
+            catch (Exception e) { }
+
+            return false;
+        }
 
     }
 
