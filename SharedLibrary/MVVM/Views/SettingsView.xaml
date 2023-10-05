@@ -26,7 +26,7 @@
 
                 <Button Content="&#x2b;" Command="{Binding ShowAddDeviceCommand}" Style="{StaticResource MenuButton}" 
                 />
-                <Button Content="&#xf03a;" Style="{StaticResource MenuButton}"
+                <Button Content="&#xf03a;" Command="{Binding ShowAllDevicesCommand}" Style="{StaticResource MenuButton}"
                 />
                 <Button  Content="&#xf013;" Style="{StaticResource MenuButton}"
                 />

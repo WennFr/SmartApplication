@@ -13,7 +13,7 @@
     <Grid>
         <Rectangle Fill="#000000" Opacity="0.92"/>
 
-        <Grid Margin="40">
+        <Grid Margin="40, 40,26,40">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />

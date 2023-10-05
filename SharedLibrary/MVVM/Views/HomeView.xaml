@@ -40,9 +40,6 @@
                 <!--Settings Button Section-->
                 <Button Grid.Column="2" Command="{Binding NavigateToSettingsCommand }"  Style="{StaticResource SettingsButton}"/>
 
-              
-
-
             </Grid>
 
             <!--DeviceItem Section-->

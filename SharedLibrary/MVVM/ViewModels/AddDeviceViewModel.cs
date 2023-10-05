@@ -51,7 +51,6 @@ namespace SharedLibrary.MVVM.ViewModels
         }
 
 
-
         [RelayCommand]
         private async Task RegisterNewDevice()
         {

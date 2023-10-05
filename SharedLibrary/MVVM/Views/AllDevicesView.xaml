@@ -4,9 +4,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SharedLibrary.MVVM.Views"
+             xmlns:viewModels="clr-namespace:SharedLibrary.MVVM.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewModels:AllDevicesViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
-            
+        <Rectangle Fill="#000000" Opacity="0.92"/>
+        <Grid Margin="40, 40,26,40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+           
+
+            <!-- Header Section -->
+            <TextBlock Grid.Row="0" Text="All Devices" Foreground="#cccccc" VerticalAlignment="Center"  Margin="0,0,0,20" FontSize="22"/>
+            <!-- Dynamic Device List Section -->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Devices}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--<TextBlock Text="{Binding DeviceId}" Foreground="#cccccc" Grid.Column="0"/>-->
+                            <StackPanel Grid.Column="1" Margin="0, 15">
+                                <TextBlock Text="Device Id:" Foreground="White" FontSize="16"/>
+                                <TextBlock Text="{Binding DeviceId}" Foreground="#cccccc"/>
+                                <TextBlock Text="Device Type:" Foreground="White" FontSize="16"/>
+                                <TextBlock Text="{Binding DeviceType}" Foreground="#cccccc"/>
+                                <TextBlock Text="Active status:" Foreground="White" FontSize="16"/>
+                                <TextBlock Text="{Binding IsActive}" Foreground="#cccccc"/>
+                            </StackPanel>
+                            <!--<Button Grid.Column="2"   Content="Remove" Command="{Binding RemoveDeviceCommand}" CommandParameter="{Binding}"  Width="80" Height="30"/>-->
+
+                            <Button Grid.Column="2"  Content="Remove" 
+                                    Command="{Binding DataContext.RemoveDeviceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                    CommandParameter="{Binding}" 
+                                    DataContext="{Binding}" Width="80" Height="30" />
+
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!--Cancel Button Section-->
+            <Button Grid.Row="0" Command="{Binding NavigateToSettingsCommand }" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="50,0,0,0"  Style="{StaticResource CancelButton}"/>
+
+        </Grid>
+
+
     </Grid>
 </UserControl>

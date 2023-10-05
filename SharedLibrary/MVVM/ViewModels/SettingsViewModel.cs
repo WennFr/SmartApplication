@@ -47,7 +47,8 @@ namespace SharedLibrary.MVVM.ViewModels
         [RelayCommand]
         private void ShowAllDevices()
         {
-
+            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+            mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<AllDevicesViewModel>();
         }
 
         [RelayCommand]

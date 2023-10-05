@@ -27,7 +27,7 @@
                     <views:AddDeviceView />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:AllDevicesViewModel}">
-                    <views:AddDeviceView />
+                    <views:AllDevicesView />
                 </DataTemplate>
             </ContentControl.Resources>
 
