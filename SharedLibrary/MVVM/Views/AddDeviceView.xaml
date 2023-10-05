@@ -21,7 +21,6 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
-                <!-- Added a new row for the Submit button -->
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 

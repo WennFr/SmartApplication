@@ -16,15 +16,9 @@ using SharedLibrary.MVVM.ViewModels;
 
 namespace Control_Panel
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
-
         public IHost? AppHost { get; set; }
-
-
 
         public App()
         {
@@ -48,6 +42,7 @@ namespace Control_Panel
                     services.AddSingleton<HomeViewModel>();
                     services.AddSingleton<SettingsViewModel>();
                     services.AddSingleton<AddDeviceViewModel>();
+                    services.AddSingleton<AllDevicesViewModel>();
                     services.AddSingleton<MainWindowViewModel>();
                     services.AddSingleton<MainWindow>();
                 })

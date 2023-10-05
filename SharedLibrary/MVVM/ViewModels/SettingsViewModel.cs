@@ -45,7 +45,7 @@ namespace SharedLibrary.MVVM.ViewModels
         }
 
         [RelayCommand]
-        private void ShowDeviceList()
+        private void ShowAllDevices()
         {
 
         }
