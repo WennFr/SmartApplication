@@ -23,6 +23,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
                     <views:SettingsView />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:AddDeviceViewModel}">
+                    <views:AddDeviceView />
+                </DataTemplate>
             </ContentControl.Resources>
 
         </ContentControl>

@@ -40,7 +40,8 @@ namespace SharedLibrary.MVVM.ViewModels
         [RelayCommand]
         private void ShowAddDevice()
         {
-
+            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+            mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<AddDeviceViewModel>();
         }
 
         [RelayCommand]
