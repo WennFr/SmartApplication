@@ -193,9 +193,7 @@ namespace SharedLibrary.Handlers.Services
             try
             {
                 using var httpClient = new HttpClient();
-                var result =
-                    await httpClient.PostAsync($"http://localhost:7193/api/DeviceRegistration?deviceId={deviceId}",
-                        null!);
+                var result = await httpClient.PostAsync($"http://localhost:7193/api/DeviceRegistration?deviceId={deviceId}", null!);
                 connectionString = await result.Content.ReadAsStringAsync();
 
                 deviceClient = DeviceClient.CreateFromConnectionString(connectionString, TransportType.Mqtt);
