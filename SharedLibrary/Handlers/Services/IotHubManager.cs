@@ -12,7 +12,9 @@ using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
+using SharedLibrary.Contexts;
 using SharedLibrary.MVVM.Models;
+using SharedLibrary.MVVM.Models.Entities;
 using TransportType = Microsoft.Azure.Devices.Client.TransportType;
 
 namespace SharedLibrary.Handlers.Services
@@ -28,12 +30,12 @@ namespace SharedLibrary.Handlers.Services
         public event Action? DevicesUpdated;
         public List<DeviceItem>? CurrentDevices { get; private set; }
 
-        public IotHubManager(IotHubManagerOptions options)
+        public IotHubManager(SmartAppDbContext context)
         {
 
-            _registryManager = RegistryManager.CreateFromConnectionString(options.IotHubConnectionString);
-            _serviceClient = ServiceClient.CreateFromConnectionString(options.IotHubConnectionString);
-            _consumerClient = new EventHubConsumerClient(options.ConsumerGroup, options.EventHubEndpoint);
+            _registryManager = RegistryManager.CreateFromConnectionString(context.Settings.FirstOrDefault().IotHubConnectionString);
+            _serviceClient = ServiceClient.CreateFromConnectionString(context.Settings.FirstOrDefault().IotHubConnectionString);
+            _consumerClient = new EventHubConsumerClient(context.Settings.FirstOrDefault().ConsumerGroup, context.Settings.FirstOrDefault().EventHubEndpoint);
 
 
             CurrentDevices = new List<DeviceItem>();

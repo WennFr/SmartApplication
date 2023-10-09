@@ -98,7 +98,6 @@ namespace SharedLibrary.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                // Handle any exceptions if the URL cannot be opened
             }
         }
 

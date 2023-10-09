@@ -7,10 +7,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedLibrary.Contexts;
 using SharedLibrary.Handlers.Services;
 using SharedLibrary.MVVM.Models;
+using SharedLibrary.MVVM.Models.Entities;
 using SharedLibrary.Services;
 using SharedLibrary.MVVM.ViewModels;
 
@@ -30,15 +33,40 @@ namespace Control_Panel
                .ConfigureServices((config, services) =>
                 {
                     services.AddTransient<HttpClient>();
+                    services.AddDbContext<SmartAppDbContext>((provider, options) =>
+                    {
+                        options.UseSqlite($"DataSource=Database.sqlite.db", x => x.MigrationsAssembly(nameof(SharedLibrary)));
+                    });
+
+
+                    using (var scope = services.BuildServiceProvider().CreateScope())
+                    {
+                        var dbContext = scope.ServiceProvider.GetRequiredService<SmartAppDbContext>();
+
+                        if (!dbContext.DatabaseExists())
+                            dbContext.Database.Migrate();
+
+                        if (!dbContext.ConnectionStringsExists())
+                        {
+                            dbContext.Settings.Add(new SmartAppSettings
+                            {
+                                Id = 1,
+                                IotHubConnectionString = config.Configuration.GetConnectionString("IotHub")!,
+                                EventHubEndpoint = config.Configuration.GetConnectionString("EventHubEndpoint")!,
+                                EventHubName = config.Configuration.GetConnectionString("EventHubName")!,
+                                ConsumerGroup = config.Configuration.GetConnectionString("ConsumerGroup")!
+                            });
+
+                            dbContext.SaveChanges();
+                        }
+
+
+                        services.AddSingleton(new IotHubManager(dbContext));
+                    }
+
                     services.AddSingleton<DateTimeService>();
                     services.AddSingleton<WeatherService>();
-                    services.AddSingleton(new IotHubManager(new IotHubManagerOptions
-                    {
-                        IotHubConnectionString = config.Configuration.GetConnectionString("IotHub")!,
-                        EventHubEndpoint = config.Configuration.GetConnectionString("EventHubEndpoint")!,
-                        EventHubName = config.Configuration.GetConnectionString("EventHubName")!,
-                        ConsumerGroup = config.Configuration.GetConnectionString("ConsumerGroup")!
-                    }));
+
                     services.AddSingleton<HomeViewModel>();
                     services.AddSingleton<SettingsViewModel>();
                     services.AddSingleton<AddDeviceViewModel>();
