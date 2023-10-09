@@ -54,7 +54,8 @@ namespace SharedLibrary.MVVM.ViewModels
         [RelayCommand]
         private void ShowConfiguration()
         {
-
+            var mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+            mainWindowViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<ConfigurationViewModel>();
         }
 
         [RelayCommand]

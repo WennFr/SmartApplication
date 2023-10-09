@@ -28,7 +28,7 @@
                 />
                 <Button Content="&#xf03a;" Command="{Binding ShowAllDevicesCommand}" Style="{StaticResource MenuButton}"
                 />
-                <Button  Content="&#xf013;" Style="{StaticResource MenuButton}"
+                <Button  Content="&#xf013;" Command="{Binding ShowConfigurationCommand}"  Style="{StaticResource MenuButton}"
                 />
                 <Button  Content="&#xf011;" Command="{Binding ExitApplicationCommand}" Style="{StaticResource MenuButton}"
                 />

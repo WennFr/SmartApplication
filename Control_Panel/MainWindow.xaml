@@ -29,6 +29,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:AllDevicesViewModel}">
                     <views:AllDevicesView />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:ConfigurationViewModel}">
+                    <views:ConfigurationView />
+                </DataTemplate>
             </ContentControl.Resources>
 
         </ContentControl>

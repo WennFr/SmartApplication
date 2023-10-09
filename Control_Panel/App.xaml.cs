@@ -43,6 +43,7 @@ namespace Control_Panel
                     services.AddSingleton<SettingsViewModel>();
                     services.AddSingleton<AddDeviceViewModel>();
                     services.AddSingleton<AllDevicesViewModel>();
+                    services.AddSingleton<ConfigurationViewModel>();
                     services.AddSingleton<MainWindowViewModel>();
                     services.AddSingleton<MainWindow>();
                 })
