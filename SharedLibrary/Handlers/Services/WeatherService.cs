@@ -15,7 +15,6 @@ namespace SharedLibrary.Handlers.Services
 {
     public class WeatherService
     {
-        private readonly string _url = "";
         private readonly Timer _timer;
         private readonly HttpClient _http;
 
