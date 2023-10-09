@@ -22,7 +22,7 @@ namespace SharedLibrary.Handlers.Services
         public string? CurrentWeatherCondition { get; private set; }
         public string? CurrentTemperature { get; private set; }
         public string? CurrentHumidity { get; private set; }
-
+        public int WeatherUpdateMinutes { get; set; } = 15;
 
         public event Action? WeatherUpdated;
 
@@ -31,7 +31,7 @@ namespace SharedLibrary.Handlers.Services
         {
             _http = http;
             Task.Run(SetCurrentWeatherAsync);
-            _timer = new Timer(60000 * 15);
+            _timer = new Timer(60000 * WeatherUpdateMinutes);
             _timer.Elapsed += async (s, e) => await SetCurrentWeatherAsync();
             _timer.Start();
         }

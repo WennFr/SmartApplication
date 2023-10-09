@@ -26,14 +26,16 @@
             <TextBlock Grid.Row="0" Text="Configuration" Foreground="#cccccc" VerticalAlignment="Center"  Margin="0,0,0,20" FontSize="22"/>
 
             <!-- Weather Section -->
-            <TextBlock Grid.Row="1" Text="Weather Update:" Foreground="White" VerticalAlignment="Center"  FontSize="16"/>
-            <TextBox Grid.Row="1" Width="300" Margin="0,15" Text="{Binding DeviceId, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Grid.Row="1" Text="Weather Update (minutes):" Foreground="White" VerticalAlignment="Center"  FontSize="16"/>
+            <TextBox Grid.Row="1" Width="300" Margin="0,15" Text="{Binding WeatherUpdateMinutes, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Row="1" Content="Submit" Command="{Binding ChangeWeatherUpdateMinutesCommand}" Width="50" Height="19" VerticalAlignment="Center" Margin="380,0,0,0" />
 
             <!-- Device Type Section -->
             <TextBlock Grid.Row="2" Text="IotHub:" Foreground="White" VerticalAlignment="Center"  FontSize="16"/>
             <TextBox Grid.Row="2" Width="300" Margin="0,15" Text="{Binding DeviceType, UpdateSourceTrigger=PropertyChanged}"/>
 
-
+            <!--Cancel Button Section-->
+            <Button Grid.Row="0" Command="{Binding NavigateToSettingsCommand }" VerticalAlignment="Center"  HorizontalAlignment="Right" Margin="50,0,0,0"  Style="{StaticResource CancelButton}"/>
         </Grid>
 
 
