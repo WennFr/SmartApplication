@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Azure.Devices" Version="1.39.0" />
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.42.0" />
     <PackageReference Include="Microsoft.Azure.Devices.Shared" Version="1.30.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

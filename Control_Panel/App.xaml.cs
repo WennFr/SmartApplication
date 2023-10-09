@@ -32,6 +32,7 @@ namespace Control_Panel
                     services.AddTransient<HttpClient>();
                     services.AddSingleton<DateTimeService>();
                     services.AddSingleton<WeatherService>();
+                    services.AddSingleton<FileManager>();
                     services.AddSingleton(new IotHubManager(new IotHubManagerOptions
                     {
                         IotHubConnectionString = config.Configuration.GetConnectionString("IotHub")!,
