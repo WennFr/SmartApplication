@@ -17,6 +17,7 @@ namespace SharedLibrary.MVVM.ViewModels
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly WeatherService _weatherService;
+        private readonly SmartAppDbService _dbService;
 
         private string _weatherUpdateMinutes;
         private string _iotHubConnectionString;
@@ -56,12 +57,17 @@ namespace SharedLibrary.MVVM.ViewModels
         }
 
 
-        public ConfigurationViewModel(IServiceProvider serviceProvider, WeatherService weatherService)
+        public ConfigurationViewModel(IServiceProvider serviceProvider, WeatherService weatherService, SmartAppDbService dbService)
         {
             _serviceProvider = serviceProvider;
             _weatherService = weatherService;
+            _dbService = dbService;
 
             WeatherUpdateMinutes = weatherService.WeatherUpdateMinutes.ToString();
+            IotHubConnectionString = _dbService.IotHubConnectionString;
+            EventHubEndpoint = _dbService.EventHubEndpoint;
+            EventHubName = _dbService.EventHubName;
+            ConsumerGroup = _dbService.ConsumerGroup;
         }
 
         [RelayCommand]

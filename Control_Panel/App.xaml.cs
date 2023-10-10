@@ -36,7 +36,7 @@ namespace Control_Panel
                     services.AddDbContext<SmartAppDbContext>((provider, options) =>
                     {
                         options.UseSqlite($"DataSource=Database.sqlite.db", x => x.MigrationsAssembly(nameof(SharedLibrary)));
-                    });
+                    }, ServiceLifetime.Scoped);
 
 
                     using (var scope = services.BuildServiceProvider().CreateScope())
@@ -62,7 +62,11 @@ namespace Control_Panel
 
 
                         services.AddSingleton(new IotHubManager(dbContext));
+                        services.AddSingleton(new SmartAppDbService(dbContext));
                     }
+
+
+
 
                     services.AddSingleton<DateTimeService>();
                     services.AddSingleton<WeatherService>();
@@ -84,6 +88,10 @@ namespace Control_Panel
             await AppHost!.StartAsync();
 
             var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
+            var smartAppService = AppHost!.Services.GetRequiredService<SmartAppDbService>();
+            smartAppService.Initialize();
+
+
             mainWindow.Show();
 
             base.OnStartup(args);

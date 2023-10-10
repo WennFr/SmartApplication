@@ -33,9 +33,10 @@ namespace SharedLibrary.Handlers.Services
         public IotHubManager(SmartAppDbContext context)
         {
 
-            _registryManager = RegistryManager.CreateFromConnectionString(context.Settings.FirstOrDefault().IotHubConnectionString);
-            _serviceClient = ServiceClient.CreateFromConnectionString(context.Settings.FirstOrDefault().IotHubConnectionString);
-            _consumerClient = new EventHubConsumerClient(context.Settings.FirstOrDefault().ConsumerGroup, context.Settings.FirstOrDefault().EventHubEndpoint);
+            _registryManager = RegistryManager.CreateFromConnectionString(context.Settings.OrderBy(s => s.Id).LastOrDefault()?.IotHubConnectionString
+            );
+            _serviceClient = ServiceClient.CreateFromConnectionString(context.Settings.OrderBy(s=> s.Id).LastOrDefault().IotHubConnectionString);
+            _consumerClient = new EventHubConsumerClient(context.Settings.OrderBy(s => s.Id).LastOrDefault().ConsumerGroup, context.Settings.OrderBy(s => s.Id).LastOrDefault().EventHubEndpoint);
 
 
             CurrentDevices = new List<DeviceItem>();
