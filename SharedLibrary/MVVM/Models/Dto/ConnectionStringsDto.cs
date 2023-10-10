@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedLibrary.MVVM.Models
+namespace SharedLibrary.MVVM.Models.Dto
 {
-    public class IotHubManagerOptions
+    public class ConnectionStringsDto
     {
         public string IotHubConnectionString { get; set; } = null!;
         public string EventHubEndpoint { get; set; } = null!;

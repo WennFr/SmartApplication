@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
+using SharedLibrary.MVVM.Models.Dto;
 
 namespace SharedLibrary.MVVM.ViewModels
 {
@@ -64,10 +65,10 @@ namespace SharedLibrary.MVVM.ViewModels
             _dbService = dbService;
 
             WeatherUpdateMinutes = weatherService.WeatherUpdateMinutes.ToString();
-            IotHubConnectionString = _dbService.IotHubConnectionString;
-            EventHubEndpoint = _dbService.EventHubEndpoint;
-            EventHubName = _dbService.EventHubName;
-            ConsumerGroup = _dbService.ConsumerGroup;
+            IotHubConnectionString = _dbService.IotHubConnectionString!;
+            EventHubEndpoint = _dbService.EventHubEndpoint!;
+            EventHubName = _dbService.EventHubName!;
+            ConsumerGroup = _dbService.ConsumerGroup!;
         }
 
         [RelayCommand]
@@ -88,6 +89,25 @@ namespace SharedLibrary.MVVM.ViewModels
             }
 
         }
+
+
+        [RelayCommand]
+        private void UpdateConnectionStrings()
+        {
+            var connectionStringsDto = new ConnectionStringsDto
+            {
+                IotHubConnectionString = IotHubConnectionString,
+                EventHubEndpoint = EventHubEndpoint,
+                EventHubName = EventHubName,
+                ConsumerGroup = ConsumerGroup,
+            };
+
+            _dbService.CreateNewConnectionStrings(connectionStringsDto);
+
+        }
+
+
+
 
         [RelayCommand]
         private void OpenWeatherApiDocumentation()

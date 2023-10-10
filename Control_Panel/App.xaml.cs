@@ -59,18 +59,12 @@ namespace Control_Panel
 
                             dbContext.SaveChanges();
                         }
-
-
-                        services.AddSingleton(new IotHubManager(dbContext));
-                        services.AddSingleton(new SmartAppDbService(dbContext));
                     }
 
-
-
-
+                    services.AddSingleton<IotHubManager>();
+                    services.AddSingleton<SmartAppDbService>();
                     services.AddSingleton<DateTimeService>();
                     services.AddSingleton<WeatherService>();
-
                     services.AddSingleton<HomeViewModel>();
                     services.AddSingleton<SettingsViewModel>();
                     services.AddSingleton<AddDeviceViewModel>();
@@ -88,6 +82,8 @@ namespace Control_Panel
             await AppHost!.StartAsync();
 
             var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
+            var iotHubManager = AppHost!.Services.GetRequiredService<IotHubManager>();
+            iotHubManager.Initialize();
             var smartAppService = AppHost!.Services.GetRequiredService<SmartAppDbService>();
             smartAppService.Initialize();
 

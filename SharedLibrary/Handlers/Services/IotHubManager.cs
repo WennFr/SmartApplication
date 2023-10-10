@@ -25,6 +25,7 @@ namespace SharedLibrary.Handlers.Services
         private ServiceClient _serviceClient;
         private EventHubConsumerClient _consumerClient;
         private DeviceClient deviceClient = null!;
+        private readonly SmartAppDbContext _context;
         private readonly System.Timers.Timer _timer;
 
         public event Action? DevicesUpdated;
@@ -32,18 +33,26 @@ namespace SharedLibrary.Handlers.Services
 
         public IotHubManager(SmartAppDbContext context)
         {
+            _context = context;
 
-            _registryManager = RegistryManager.CreateFromConnectionString(context.Settings.OrderBy(s => s.Id).LastOrDefault()?.IotHubConnectionString
-            );
-            _serviceClient = ServiceClient.CreateFromConnectionString(context.Settings.OrderBy(s=> s.Id).LastOrDefault().IotHubConnectionString);
-            _consumerClient = new EventHubConsumerClient(context.Settings.OrderBy(s => s.Id).LastOrDefault().ConsumerGroup, context.Settings.OrderBy(s => s.Id).LastOrDefault().EventHubEndpoint);
-
+        
 
             CurrentDevices = new List<DeviceItem>();
+
+
+
 
             _timer = new System.Timers.Timer(5000);
             _timer.Elapsed += async (s, e) => await GetAllDevicesAsync();
             _timer.Start();
+
+        }
+
+        public void Initialize()
+        {
+            _registryManager = RegistryManager.CreateFromConnectionString(_context.Settings.OrderBy(s => s.Id).LastOrDefault()?.IotHubConnectionString);
+            _serviceClient = ServiceClient.CreateFromConnectionString(_context.Settings.OrderBy(s => s.Id).LastOrDefault().IotHubConnectionString);
+            _consumerClient = new EventHubConsumerClient(_context.Settings.OrderBy(s => s.Id).LastOrDefault().ConsumerGroup, _context.Settings.OrderBy(s => s.Id).LastOrDefault().EventHubEndpoint);
 
         }
 

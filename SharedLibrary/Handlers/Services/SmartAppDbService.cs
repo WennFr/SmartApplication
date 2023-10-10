@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedLibrary.Contexts;
+using SharedLibrary.MVVM.Models.Dto;
+using SharedLibrary.MVVM.Models.Entities;
 
 namespace SharedLibrary.Handlers.Services
 {
@@ -32,5 +34,16 @@ namespace SharedLibrary.Handlers.Services
             ConsumerGroup = _context.Settings.OrderBy(s => s.Id).LastOrDefault()?.ConsumerGroup!;
 
         }
+
+
+        public void CreateNewConnectionStrings(ConnectionStringsDto connectionStringsDto)
+        {
+            SmartAppSettings smartAppSettings = connectionStringsDto;
+            _context.Settings.Add(smartAppSettings);
+
+            _context.SaveChanges();
+        }
+
+
     }
 }
