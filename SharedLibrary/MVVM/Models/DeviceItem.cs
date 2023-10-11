@@ -20,7 +20,7 @@ namespace SharedLibrary.MVVM.Models
 
         public string? DeviceId { get; set; }
         public string? DeviceType { get; set; }
-        public string? Placement { get; set; }
+        public string? Location { get; set; }
 
         private bool _isActive;
 

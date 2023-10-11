@@ -13,7 +13,7 @@ namespace SharedLibrary.Handlers.Services
     {
         private readonly SmartAppDbContext _context;
 
-        public string? IotHubConnectionString { get; private set; } 
+        public string? IotHubConnectionString { get; private set; }
         public string? EventHubEndpoint { get; private set; }
         public string? EventHubName { get; private set; }
         public string? ConsumerGroup { get; private set; }
@@ -40,6 +40,16 @@ namespace SharedLibrary.Handlers.Services
         {
             SmartAppSettings smartAppSettings = connectionStringsDto;
             _context.Settings.Add(smartAppSettings);
+
+            _context.SaveChanges();
+        }
+
+
+        public void ResetConnectionStrings()
+        {
+            var allButTheFirst = _context.Settings.Skip(1).ToList();
+            foreach (var item in allButTheFirst)
+                _context.Settings.Remove(item);
 
             _context.SaveChanges();
         }

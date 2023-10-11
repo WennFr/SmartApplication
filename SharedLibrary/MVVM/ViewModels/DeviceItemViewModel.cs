@@ -22,8 +22,8 @@ namespace SharedLibrary.MVVM.ViewModels
 
 
         public string DeviceId => _deviceItem.DeviceId;
-
         public string DeviceType => _deviceItem.DeviceType;
+        public string Location => _deviceItem.Location;
 
         [ObservableProperty]
          bool isActive;

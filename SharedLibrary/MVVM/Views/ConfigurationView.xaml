@@ -58,6 +58,9 @@
 
             <Button Grid.Row="9" Content="Submit" Command="{Binding UpdateConnectionStringsCommand}" Width="100" Height="40" VerticalAlignment="Center" Margin="0,20,200,0" />
 
+            <Button Grid.Row="9" Content="Restore Default" Command="{Binding RestoreConnectionStringsCommand}" Width="100" Height="40" VerticalAlignment="Center" Margin="200,20,20,0" />
+
+
             <TextBlock Grid.Row="10" Foreground="White" VerticalAlignment="Center" FontSize="16" TextWrapping="Wrap">
                 For Weather API documentation, visit
                 <Hyperlink Command="{Binding OpenWeatherApiDocumentationCommand}">

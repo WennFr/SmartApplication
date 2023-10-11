@@ -145,10 +145,16 @@ namespace SharedLibrary.Handlers.Services
                     if (twin.Properties?.Reported.Contains("deviceType") == true)
                         deviceType = twin.Properties.Reported["deviceType"].ToString();
 
+
+                    var location = "";
+                    if (twin.Properties?.Reported.Contains("location") == true)
+                        location = twin.Properties.Reported["location"].ToString();
+
                     deviceItems.Add(new DeviceItem
                     {
                         DeviceId = twin.DeviceId,
                         DeviceType = deviceType,
+                        Location = location,
                         IsActive = isActive
                     });
 
@@ -212,6 +218,7 @@ namespace SharedLibrary.Handlers.Services
 
                 var twinCollection = new TwinCollection();
                 twinCollection["deviceType"] = $"{deviceType}";
+                twinCollection["location"] = $"{location}";
                 await deviceClient.UpdateReportedPropertiesAsync(twinCollection);
 
                 return true;

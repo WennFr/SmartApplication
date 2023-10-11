@@ -104,8 +104,25 @@ namespace SharedLibrary.MVVM.ViewModels
 
             _dbService.CreateNewConnectionStrings(connectionStringsDto);
 
+
+
+            //string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            //System.Diagnostics.Process.Start(appPath);
+            //Application.Current.Shutdown();
+
+
+
         }
 
+        [RelayCommand]
+        private void RestoreConnectionStrings()
+        {
+            _dbService.ResetConnectionStrings();
+
+            //string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            //System.Diagnostics.Process.Start(appPath);
+            //Application.Current.Shutdown();
+        }
 
 
 
