@@ -42,13 +42,33 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
+
+
+
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding IsActive}" Value="True">
                             <Setter TargetName="buttonBorder" Property="Background" Value="#7a7a7a"/>
                         </DataTrigger>
-                    </ControlTemplate.Triggers>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <!-- Check if the button is pressed (IsPressed is True) -->
+                                <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <!-- Check if the device is active (IsActive is True) -->
+                                <Condition Binding="{Binding IsActive}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <!-- Set the background to #7a7a7a when both conditions are met -->
+                            <Setter TargetName="buttonBorder" Property="Background" Value="#3f3f40" />
+                        </MultiDataTrigger>
+
+
+
+
+
+
+</ControlTemplate.Triggers>
                 </ControlTemplate>
 
 
