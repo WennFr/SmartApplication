@@ -105,10 +105,13 @@ namespace SharedLibrary.MVVM.ViewModels
             _dbService.CreateNewConnectionStrings(connectionStringsDto);
 
 
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                string appPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                System.Diagnostics.Process.Start(appPath);
+                Application.Current.Shutdown();
+            });
 
-            //string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            //System.Diagnostics.Process.Start(appPath);
-            //Application.Current.Shutdown();
 
 
 
@@ -119,9 +122,12 @@ namespace SharedLibrary.MVVM.ViewModels
         {
             _dbService.ResetConnectionStrings();
 
-            //string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            //System.Diagnostics.Process.Start(appPath);
-            //Application.Current.Shutdown();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                string appPath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                System.Diagnostics.Process.Start(appPath);
+                Application.Current.Shutdown();
+            });
         }
 
 
