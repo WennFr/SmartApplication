@@ -223,22 +223,26 @@ namespace SharedLibrary.Handlers.Services
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return false;
             }
 
         }
 
-        public async Task RemoveDevice(string deviceId)
+        public async Task<bool> RemoveDevice(string deviceId)
         {
             try
             {
                 await _registryManager.RemoveDeviceAsync(deviceId);
+                return true;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                return false;
+
             }
         }
 

@@ -6,10 +6,15 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Messages;
+using ToastNotifications.Position;
 
 namespace SharedLibrary.MVVM.ViewModels
 {
@@ -17,6 +22,24 @@ namespace SharedLibrary.MVVM.ViewModels
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IotHubManager _iotHub;
+
+
+        Notifier notifier = new Notifier(cfg =>
+        {
+            cfg.PositionProvider = new WindowPositionProvider(
+                parentWindow: Application.Current.MainWindow,
+                corner: Corner.TopRight,
+                offsetX: 10,
+                offsetY: 10);
+
+            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
+                notificationLifetime: TimeSpan.FromSeconds(3),
+                maximumNotificationCount: MaximumNotificationCount.FromCount(5));
+
+            cfg.Dispatcher = Application.Current.Dispatcher;
+        });
+
+
         public AllDevicesViewModel(IServiceProvider serviceProvider, IotHubManager iotHub)
         {
             _serviceProvider = serviceProvider;
@@ -41,11 +64,26 @@ namespace SharedLibrary.MVVM.ViewModels
         {
             try
             {
+                var message = "";
+
                 if (parameter is DeviceItemViewModel device)
                 {
-                    // Call the RemoveDevice method in IotHubManager
-                    await _iotHub.RemoveDevice(device.DeviceId);
+                    var isRemoved = await _iotHub.RemoveDevice(device.DeviceId);
+
+                    if (isRemoved)
+                    {
+                        message = $"{device.DeviceId} was removed!";
+                        notifier.ShowSuccess(message);
+                        NavigateToSettings();
+                    }
+
+                    else
+                    {
+                        message = $"Could not remove device.";
+                        notifier.ShowError(message);
+                    }
                 }
+
             }
             catch (Exception ex)
             {
