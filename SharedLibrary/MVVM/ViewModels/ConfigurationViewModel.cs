@@ -11,6 +11,10 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Handlers.Services;
 using SharedLibrary.MVVM.Models.Dto;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Messages;
+using ToastNotifications.Position;
 
 namespace SharedLibrary.MVVM.ViewModels
 {
@@ -26,7 +30,20 @@ namespace SharedLibrary.MVVM.ViewModels
         private string _eventHubName;
         private string _consumerGroup;
 
+        Notifier notifier = new Notifier(cfg =>
+        {
+            cfg.PositionProvider = new WindowPositionProvider(
+                parentWindow: Application.Current.MainWindow,
+                corner: Corner.TopRight,
+                offsetX: 10,
+                offsetY: 10);
 
+            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
+                notificationLifetime: TimeSpan.FromSeconds(3),
+                maximumNotificationCount: MaximumNotificationCount.FromCount(5));
+
+            cfg.Dispatcher = Application.Current.Dispatcher;
+        });
         public string WeatherUpdateMinutes
         {
             get { return _weatherUpdateMinutes; }
@@ -82,12 +99,19 @@ namespace SharedLibrary.MVVM.ViewModels
         private void ChangeWeatherUpdateMinutes()
         {
             int newWeatherUpdateMinutes;
+            var message = "";
             if (int.TryParse(WeatherUpdateMinutes, out newWeatherUpdateMinutes))
             {
                 _weatherService.WeatherUpdateMinutes = newWeatherUpdateMinutes;
+                message = $"Changed weather update frequency to {newWeatherUpdateMinutes} minutes!";
+                notifier.ShowSuccess(message);
                 NavigateToSettings();
             }
-
+            else
+            {
+                message = $"Could not change weather update frequency.";
+                notifier.ShowError(message);
+            }
         }
 
 
