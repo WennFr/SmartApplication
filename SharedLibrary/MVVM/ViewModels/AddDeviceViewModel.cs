@@ -7,6 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Messages;
+using ToastNotifications.Position;
 
 namespace SharedLibrary.MVVM.ViewModels
 {
@@ -37,11 +42,34 @@ namespace SharedLibrary.MVVM.ViewModels
             set { SetProperty(ref _location, value); }
         }
 
+
+        Notifier notifier = new Notifier(cfg =>
+        {
+            cfg.PositionProvider = new WindowPositionProvider(
+                parentWindow: Application.Current.MainWindow,
+                corner: Corner.TopRight,
+                offsetX: 10,
+                offsetY: 10);
+
+            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
+                notificationLifetime: TimeSpan.FromSeconds(3),
+                maximumNotificationCount: MaximumNotificationCount.FromCount(5));
+
+            cfg.Dispatcher = Application.Current.Dispatcher;
+        });
+
+
         public AddDeviceViewModel(IServiceProvider serviceProvider, IotHubManager iotHub)
         {
             _serviceProvider = serviceProvider;
             _iotHub = iotHub;
         }
+
+
+      
+
+
+
 
         [RelayCommand]
         private void NavigateToSettings()
@@ -58,13 +86,20 @@ namespace SharedLibrary.MVVM.ViewModels
             var deviceType = DeviceType;
             var location = Location;
 
-            var isRegistered = await _iotHub.RegisterDevice(deviceId, deviceType, location);
+            var isRegistered = await _iotHub.RegisterDeviceAsync(deviceId, deviceType, location);
+            var message = "";
 
             if (isRegistered)
             {
+                message = $"{deviceId} added!";
+                notifier.ShowSuccess(message);
                 NavigateToSettings();
             }
-
+            else
+            {
+                message = $"Something went wrong.";
+                notifier.ShowError(message);
+            }
         }
 
     }

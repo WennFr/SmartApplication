@@ -203,7 +203,7 @@ namespace SharedLibrary.Handlers.Services
         }
 
 
-        public async Task<bool> RegisterDevice(string deviceId, string deviceType, string location)
+        public async Task<bool> RegisterDeviceAsync(string deviceId, string deviceType, string location)
         {
 
             var connectionString = string.Empty;
@@ -211,7 +211,7 @@ namespace SharedLibrary.Handlers.Services
             try
             {
                 using var httpClient = new HttpClient();
-                var result = await httpClient.PostAsync($"http://localhost:7193/api/DeviceRegistration?deviceId={deviceId}", null!);
+                var result = await httpClient.PostAsync($"https://fw-smart-af.azurewebsites.net/api/DeviceRegistration?deviceId={deviceId}&code=pfwA54Y0hVDgQ_XJpOJLsiGDOnKykwXwEYg4SyZk1aUbAzFuyXhLGw==", null!);
                 connectionString = await result.Content.ReadAsStringAsync();
 
                 deviceClient = DeviceClient.CreateFromConnectionString(connectionString, TransportType.Mqtt);
@@ -225,9 +225,9 @@ namespace SharedLibrary.Handlers.Services
             }
             catch (Exception e)
             {
+                return false;
             }
 
-            return false;
         }
 
         public async Task RemoveDevice(string deviceId)
