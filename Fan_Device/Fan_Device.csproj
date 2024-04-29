@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Fonts\fa-brands-400.ttf" />
+    <None Remove="Resources\Fonts\fa-duotone-900.ttf" />
+    <None Remove="Resources\Fonts\fa-light-300.ttf" />
+    <None Remove="Resources\Fonts\fa-regular-400.ttf" />
+    <None Remove="Resources\Fonts\fa-sharp-light-300.ttf" />
+    <None Remove="Resources\Fonts\fa-sharp-regular-400.ttf" />
+    <None Remove="Resources\Fonts\fa-sharp-solid-900.ttf" />
+    <None Remove="Resources\Fonts\fa-solid-900.ttf" />
+    <None Remove="Resources\Fonts\fa-thin-100.ttf" />
+    <None Remove="Resources\Fonts\fa-v4compatibility.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Fonts\fa-brands-400.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-duotone-900.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-light-300.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-regular-400.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-sharp-light-300.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-sharp-regular-400.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-sharp-solid-900.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-solid-900.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Fonts\fa-thin-100.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\fa-v4compatibility.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\FontDictionary.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+
+</Project>
